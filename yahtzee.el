@@ -800,7 +800,7 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
       (when (and (not only-scores)
 		 (= player yahtzee-active-player))
 	(insert "  «")
-	(put-text-property (- (point) 1) (point) 'font-lock-face 'yahtzee-face-selected))
+	(put-text-property (- (point) 1) (point) 'font-lock-face '((t . (:foreground "red")))))
       (forward-line 2)
       (end-of-line)
       (insert fields-dice-separation))
