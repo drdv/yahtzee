@@ -115,6 +115,9 @@ If set to nil, game is saved interactively (i.e., user specifies filename).
 For example \"/path/to/scores/game-*.json\" would generate a file
 \"/path/to/scores/game-004.json\" if there are already three saved files.")
 
+(defvar yahtzee-game-over nil
+  "Non-nil indicates that the game has ended.")
+
 
 
 (defface yahtzee-face '((t . (:background "khaki"
@@ -809,7 +812,9 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
     ;; fourth, announce the winner when the game is over
     ;; ================================================================
 
-    (when (= yahtzee-moves-left 0)
+    (when (and (= yahtzee-moves-left 0)
+	       (not yahtzee-game-over))
+      (setq yahtzee-game-over t)
       (forward-line 3)
       (end-of-line)
       (insert fields-dice-separation)
