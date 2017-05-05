@@ -4,7 +4,7 @@
 
 ;; Author: Dimitar Dimitrov <mail.mitko@gmail.com>
 ;; URL: https://github.com/drdv/yahtzee
-;; Package-Version: 20170504.1
+;; Package-Version: 20170505.1
 ;; Package-Requires: ()
 ;; Keywords: games
 
@@ -26,10 +26,22 @@
 ;; add (require 'yahtzee) in your .emacs
 ;; M-x yahtzee  start a game
 ;; C-n          add players
+;; C-r          reset players
 ;; SPC          throw dice
 ;; {1,2,3,4,5}  hold outcome of {1,2,3,4,5}-th dice
 ;; UP/DOWN      select score to register
 ;; ENTER        register selected score
+;; w            save the game (in json format)
+;;
+;; The score of a saved game can be loaded using `M-x yahtzee-load-game-score`.
+;;
+;; Configuration variables:
+;;
+;; The user might want to set the following variables (see docstrings)
+;;   - `yahtzee-output-file-base'
+;;   - `yahtzee-number-of-players' (for setting number of players )
+;;   - `yahtzee-players-names'     (number of players and their names)
+;;   - `yahtzee-fields-alist'      (for adding extra fields)
 
 ;;; Code:
 
@@ -106,7 +118,7 @@ For example \"/path/to/scores/game-*.json\" would generate a file
 
 
 (defface yahtzee-face '((t . (:background "khaki"
-				   :foreground "black")))
+			      :foreground "black")))
   "Generic face."
   :group 'yahtzee-faces)
 
@@ -131,21 +143,17 @@ For example \"/path/to/scores/game-*.json\" would generate a file
   (yahtzee-display-board)
   )
 
-(defun yahtzee-set-player-name (arg)
-  "Set names of players.
-The first invocation replaces the default player.
-Each subsequent invocation adds a new player and sets its name.
-ARG is set in the mini-buffer by the user."
+(defun yahtzee-set-player-name (player-name)
+  "Add a new player and sets its name.
+PLAYER-NAME is set in the mini-buffer by the user."
   (interactive
    (list
     (read-string "Player name: ")))
-  ;; protect against unintended restart of game
+  ;; protect against unintended game restart
   (if (< yahtzee-moves-left (length yahtzee-fields-alist))
       (message "Each player has already made a move!
 If you want to rename players, first restart the game using \"M-x yahtzee\".")
-    (when (equal (car yahtzee-players-names) "player-1")
-      (pop yahtzee-players-names))
-    (setq yahtzee-players-names (append yahtzee-players-names `(,arg)))
+    (setq yahtzee-players-names (append yahtzee-players-names `(,player-name)))
     (setq yahtzee-number-of-players (length yahtzee-players-names))
     (yahtzee-reset)
     (yahtzee-display-board)))
@@ -561,6 +569,19 @@ This reads the score from `yahtzee-scores'."
 
 (defun yahtzee-reset ()
   "Reset/initialize a new game."
+
+  ;; ====================================================================
+  ;; handle players
+  ;; ====================================================================
+  ;; handle the case when the used has set the names of players but not their number
+  (when (> (length yahtzee-players-names)
+	   yahtzee-number-of-players)
+    (setq yahtzee-number-of-players (length yahtzee-players-names)))
+
+  (when (> yahtzee-number-of-players 7)
+    (error "Add more labels to variable `yahtzee-players-labels'"))
+  ;; ====================================================================
+
   (yahtzee-initialize-fields-alist)
   (yahtzee-initialize-scores)
   (setq yahtzee-loaded-game nil)
@@ -572,15 +593,6 @@ This reads the score from `yahtzee-scores'."
 	(make-vector yahtzee-number-of-dice-to-throw nil))
   (setq yahtzee-dice-outcomes-counts
 	(make-vector (length yahtzee-dice-possible-outcomes) 0))
-
-  ;; if `yahtzee-players-names' is nil set it to something default
-  (when (not yahtzee-players-names)
-    (dotimes (player yahtzee-number-of-players)
-      (push (concat "player-" (int-to-string (1+ player))) yahtzee-players-names))
-    (setq yahtzee-players-names (reverse yahtzee-players-names)))
-
-  (when (> yahtzee-number-of-players 7)
-    (error "Add more labels to variable `yahtzee-players-labels'"))
   )
 
 (defun yahtzee ()
