@@ -598,6 +598,7 @@ A bonus is awarded when the player scores at least
   (yahtzee-initialize-fields-alist)
   (yahtzee-initialize-scores)
   (setq yahtzee-loaded-game nil)
+  (setq yahtzee-game-over nil)
   (setq yahtzee-active-player 0)
   (setq yahtzee-dice-thrown-number 0)
   (setq yahtzee-moves-left (length yahtzee-fields-alist))
