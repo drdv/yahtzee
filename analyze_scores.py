@@ -4,6 +4,7 @@
 
 import json
 import glob
+import itertools
 
 filename_wildcard = "./scores/game-*.json"
 
@@ -33,11 +34,9 @@ class player():
 
 # ===========================================================================
 
-elena  = player('Elena')
-mitko  = player('Mitko')
-marina = player('Marina')
-
-players = [elena, marina, mitko]
+players = [player('Elena'),
+           player('Mitko'),
+           player('Marina')]
 
 for file in glob.glob(filename_wildcard):
     with open(file) as data_file:
@@ -47,17 +46,16 @@ for file in glob.glob(filename_wildcard):
     val = list(data['total-score'].values())
     max_score = max(val)
 
-    winners, loosers = [], []
-    winners.extend([key[i] for i,j in enumerate(val) if j == max_score])
-    loosers.extend([key[i] for i,j in enumerate(val) if j != max_score])
+    winners = [key[i] for i,j in enumerate(val) if j == max_score]
+    loosers = [key[i] for i,j in enumerate(val) if j != max_score]
 
     for player in players:
         player.set(winners, loosers)
 
 # ===========================================================================
 
-elena.result_against(mitko)
-elena.result_against(marina)
-marina.result_against(mitko)
+# display scores
+for (player_i, player_j) in list(itertools.combinations(players,2)):
+    player_i.result_against(player_j)
 
 ###EOF
