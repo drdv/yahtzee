@@ -43,10 +43,10 @@
 ;;   - `yahtzee-players-names'     (number of players and their names)
 ;;   - `yahtzee-fields-alist'      (for adding extra fields)
 ;;
-;; Note: personally I don't like playing with "Yahtzee bonuses" and "Joker rules"
+;; Note: personally I don't enjoy playing with "Yahtzee bonuses" and "Joker rules"
 ;;       so they are not implemented (even thought they are simple to include).
-;;       I use only one bonus (see `yahtzee-compute-bonus'). Furthermore, some
-;;       scores differ from the official ones. Changing all this can be done by
+;;       Only the "63 bonus" is available (see `yahtzee-compute-bonus'). Furthermore,
+;;       some scores differ from the official ones. Changing all this can be done by
 ;;       simply modifying the corresponding functions in the definition of
 ;;       `yahtzee-fields-alist'.
 

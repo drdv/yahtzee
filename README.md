@@ -26,9 +26,9 @@ The score of a saved game can be loaded using `M-x yahtzee-load-game-score`.
 
 # Notes
 
-Personally I don't like playing with "Yahtzee bonuses" and "Joker rules"
+Personally I don't enjoy playing with "Yahtzee bonuses" and "Joker rules"
 so they are not implemented (even thought they are simple to include).
-I use only one bonus (see `yahtzee-compute-bonus`). Furthermore, note
-that some scores differ from the official ones. Changing all this can
-be done by simply modifying the corresponding functions in the
-definition of `yahtzee-fields-alist`.
+Only the "63 bonus" is available (see `yahtzee-compute-bonus`). Furthermore,
+some scores differ from the official ones. Changing all this can be
+done by simply modifying the corresponding functions in the definition
+of `yahtzee-fields-alist`.
