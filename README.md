@@ -6,12 +6,12 @@ The [Yahtzee](https://en.wikipedia.org/wiki/Yahtzee) game.
 
 The image is from a game with three players.
 
-# Installation:
+# Installation
 
 Ensure that `yahtzee.el` is in a directory on your load-path, and add `(require 'yahtzee)`
 to your `~/.emacs` or `~/.emacs.d/init.el`.
 
-# How to play:
+# How to play
 
 - `M-x yahtzee` start a game
 - `C-n`         add players
