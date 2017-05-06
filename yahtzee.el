@@ -434,7 +434,7 @@ Here I use a fixed score instead of the official sum of all dice."
   (apply '+ (mapcar (lambda (x) x) yahtzee-dice-outcomes)))
 
 (defun yahtzee-brelan-compute-score ()
-  "Compute score for brelan (e.g., [5 5 5 3 8])."
+  "Compute score for brelan (e.g., [5 5 5 3 1])."
   (yahtzee-dice-count)
   (let ((counts (sort (copy-sequence yahtzee-dice-outcomes-counts) '>)))
     (if (<= 3 (elt counts 0) 5)
