@@ -43,11 +43,12 @@
 ;;   - `yahtzee-players-names'     (number of players and their names)
 ;;   - `yahtzee-fields-alist'      (for adding extra fields)
 ;;
-;; Note: personally I don't like playing with Yahtzee bonuses and Joker rules
+;; Note: personally I don't like playing with "Yahtzee bonuses" and "Joker rules"
 ;;       so they are not implemented (even thought they are simple to include).
-;;       Furthermore, some scores differ from the official ones. Changing all this
-;;       can be done by simply modifying the corresponding functions in the
-;;       definition of the `yahtzee-fields-alist'
+;;       I use only one bonus (see `yahtzee-compute-bonus'). Furthermore, some
+;;       scores differ from the official ones. Changing all this can be done by
+;;       simply modifying the corresponding functions in the definition of
+;;       `yahtzee-fields-alist'.
 
 ;;; Code:
 
@@ -522,7 +523,9 @@ This reads the score from `yahtzee-scores'."
     total-score))
 
 (defun yahtzee-compute-bonus (player)
-  "Return the bonus for PLAYER."
+  "Return the bonus for PLAYER.
+A bonus is awarded when the player scores at least
+3*(1+2+3+4+5+6) = 63 in total for the categories 1,2,3,4,5,6."
   (let ((bonus-threshold 0)
 	(field-names '("1" "2" "3" "4" "5" "6"))
 	field-score)
@@ -530,7 +533,6 @@ This reads the score from `yahtzee-scores'."
       (setq field-score (yahtzee-get-score (pop field-names) player))
       (when field-score
 	(setq bonus-threshold (+ bonus-threshold field-score))))
-    ;; 3*(1+2+3+4+5+6) = 63
     (if (>= bonus-threshold 63)
 	30
       0)))
