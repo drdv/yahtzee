@@ -5,6 +5,7 @@
 		      ([6 5 6 5 6] . 30)
 		      ([1 2 3 2 3] .  0)
 		      ([6 6 6 5 6] .  0)
+		      ([6 6 6 6 6] .  0)
 		      )))
     (dolist (pair test-pairs)
       (setq yahtzee-dice-outcomes (car pair))

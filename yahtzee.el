@@ -42,6 +42,12 @@
 ;;   - `yahtzee-number-of-players' (for setting number of players )
 ;;   - `yahtzee-players-names'     (number of players and their names)
 ;;   - `yahtzee-fields-alist'      (for adding extra fields)
+;;
+;; Note: personally I don't like playing with Yahtzee bonuses and Joker rules
+;;       so they are not implemented (even thought they are simple to include).
+;;       Furthermore, some scores differ from the official ones. Changing all this
+;;       can be done by simply modifying the corresponding functions in the
+;;       definition of the `yahtzee-fields-alist'
 
 ;;; Code:
 
@@ -308,7 +314,8 @@ The possible outputs are specified in `yahtzee-dice-possible-outcomes'."
 
 
 (defun yahtzee-full-compute-score ()
-  "Compute score for a full (e.g., [2 2 2 4 4])."
+  "Compute score for a full (e.g., [2 2 2 4 4]).
+I assume that e.g., [3 3 3 3 3] cannot be used as a full."
   (yahtzee-dice-count)
   (let ((counts (sort (copy-sequence yahtzee-dice-outcomes-counts) '>)))
     (if (and (= (elt counts 0) 3)
@@ -354,7 +361,8 @@ The possible outputs are specified in `yahtzee-dice-possible-outcomes'."
       0)))
 
 (defun yahtzee-carre-compute-score ()
-  "Compute score for a carre (e.g., [3 3 3 3 1])."
+  "Compute score for a carre (e.g., [3 3 3 3 1]).
+Here I use a fixed score instead of the official sum of all dice."
   (yahtzee-dice-count)
   (let ((counts (sort (copy-sequence yahtzee-dice-outcomes-counts) '>)))
     (if (<= 4 (elt counts 0) 5)
