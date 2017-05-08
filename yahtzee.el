@@ -126,8 +126,8 @@ For example \"/path/to/scores/game-*.json\" would generate a file
 (defvar yahtzee-game-over nil
   "Non-nil indicates that the game has ended.")
 
-(defvar yahtzee-time nil
-  "Time duration of a game.")
+(defvar yahtzee-game-start-time nil
+  "Records the time when the game started.")
 
 
 
@@ -607,7 +607,7 @@ A bonus is awarded when the player scores at least
   (setq yahtzee-active-player 0)
   (setq yahtzee-dice-thrown-number 0)
   (setq yahtzee-moves-left (length yahtzee-fields-alist))
-  (setq yahtzee-time (current-time))
+  (setq yahtzee-game-start-time (current-time))
 
   (setq yahtzee-dice-outcomes
 	(make-vector yahtzee-number-of-dice-to-throw nil))
@@ -883,7 +883,7 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
 	  (put-text-property point (+ point 10) 'font-lock-face 'yahtzee-face)))
 
       ;; game duration
-      (let ((elapsed (float-time (time-subtract (current-time) yahtzee-time))))
+      (let ((elapsed (float-time (time-subtract (current-time) yahtzee-game-start-time))))
 	(forward-line 2)
 	(end-of-line)
 	(insert fields-dice-separation)
