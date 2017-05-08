@@ -126,6 +126,9 @@ For example \"/path/to/scores/game-*.json\" would generate a file
 (defvar yahtzee-game-over nil
   "Non-nil indicates that the game has ended.")
 
+(defvar yahtzee-time nil
+  "Time duration of a game.")
+
 
 
 (defface yahtzee-face '((t . (:background "khaki"
@@ -604,6 +607,7 @@ A bonus is awarded when the player scores at least
   (setq yahtzee-active-player 0)
   (setq yahtzee-dice-thrown-number 0)
   (setq yahtzee-moves-left (length yahtzee-fields-alist))
+  (setq yahtzee-time (current-time))
 
   (setq yahtzee-dice-outcomes
 	(make-vector yahtzee-number-of-dice-to-throw nil))
@@ -836,6 +840,7 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
 
     ;; ================================================================
     ;; fourth, announce the winner when the game is over
+    ;; include game duration
     ;; ================================================================
 
     (when (and (= yahtzee-moves-left 0)
@@ -876,6 +881,13 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
 	(let ((point (point)))
 	  (insert (format "WINNER(S): %s" (apply 'concat winner)))
 	  (put-text-property point (+ point 10) 'font-lock-face 'yahtzee-face)))
+
+      ;; game duration
+      (let ((elapsed (float-time (time-subtract (current-time) yahtzee-time))))
+	(forward-line 2)
+	(end-of-line)
+	(insert fields-dice-separation)
+	(insert (format "game duration = %.2f min." (/ elapsed 60))))
 
       (when (and (not yahtzee-loaded-game)
 		 (y-or-n-p "Press y to save the game. Save the game? "))
