@@ -146,6 +146,10 @@ For example \"/path/to/scores/game-*.json\" would generate a file
   "Face for selected stuff."
   :group 'yahtzee-faces)
 
+(defface yahtzee-face-user-arrow '((t . (:foreground "red")))
+  "Face for selected stuff."
+  :group 'yahtzee-faces)
+
 
 
 (defun yahtzee-reset-players ()
@@ -831,7 +835,7 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
       (when (and (not only-scores)
 		 (= player yahtzee-active-player))
 	(insert "  «")
-	(put-text-property (- (point) 1) (point) 'font-lock-face '((t . (:foreground "red")))))
+	(put-text-property (- (point) 1) (point) 'font-lock-face 'yahtzee-face-user-arrow))
       (forward-line 2)
       (end-of-line)
       (insert fields-dice-separation))
