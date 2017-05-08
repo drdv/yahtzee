@@ -72,7 +72,7 @@ assume: `yahtzee-number-of-players' <= 7.")
   "Number of moves left in the game.
 Initially set to the numbe of fields in `yahtzee-fields-alist'.")
 
-(defvar yahtzee-number-of-dice-to-throw 7
+(defvar yahtzee-number-of-dice-to-throw 5
   "Number of dice to throw.")
 
 (defvar yahtzee-dice-max-attempt 3
