@@ -20,7 +20,7 @@ build: checkdoc package-lint
 cask:
 	${CASK} install
 
-test: cask build
+test: build
 	${CASK} exec ert-runner
 
 clean :
