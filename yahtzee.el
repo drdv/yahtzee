@@ -46,8 +46,8 @@
 ;;
 ;; Note: personally I don't enjoy playing with "Yahtzee bonuses" and "Joker rules"
 ;;       so they are not implemented (even thought they are simple to include).
-;;       Only the "63 bonus" is available (see `yahtzee-compute-bonus'). Furthermore,
-;;       some scores differ from the official ones. Changing all this can be done by
+;;       Only the "63 bonus" is available (see `yahtzee-compute-bonus').  Furthermore,
+;;       some scores differ from the official ones.  Changing all this can be done by
 ;;       simply modifying the corresponding functions in the definition of
 ;;       `yahtzee-fields-alist'.
 
@@ -632,7 +632,7 @@ A bonus is awarded when the player scores at least
       (yahtzee)
     ;; ELSE
     ;; ask for confirmation only if the game has not been finished
-    (when (y-or-n-p "Press y to start a new game. Start a new game? ")
+    (when (y-or-n-p "Press y to start a new game.  Start a new game? ")
       (yahtzee))))
 
 
@@ -888,7 +888,7 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
 	(insert (format "game duration = %.2f min." (/ elapsed 60))))
 
       (when (and (not yahtzee-loaded-game)
-		 (y-or-n-p "Press y to save the game. Save the game? "))
+		 (y-or-n-p "Press y to save the game.  Save the game? "))
 	(if (not yahtzee-output-file-base)
 	    (call-interactively 'yahtzee-save-game-score)
 	  ;; current-number: the number of already saved files

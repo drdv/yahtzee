@@ -5,7 +5,7 @@ PACKAGE-NAME=yahtzee.el
 all: build
 
 checkdoc:
-	@$(EMACS) -Q --batch -f "checkdoc" ${PACKAGE-NAME}
+	$(EMACS) -Q -batch --eval "(checkdoc-file \"${PACKAGE-NAME}\")"
 
 package-lint: cask
 	${CASK} exec $(EMACS) -Q --batch -l "package-lint.el" \
