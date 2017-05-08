@@ -622,8 +622,16 @@ A bonus is awarded when the player scores at least
 
 (defun yahtzee-new-game ()
   (interactive)
-  (when (y-or-n-p "Press y to start a new game. Start a new game? ")
-    (yahtzee)))
+  (if (or yahtzee-game-over
+	  ;; before all players have finished their
+	  ;; first move we don't ask for verification
+	  (= yahtzee-moves-left (length yahtzee-fields-alist)))
+      ;;THEN
+      (yahtzee)
+    ;; ELSE
+    ;; ask for confirmation only if the game has not been finished
+    (when (y-or-n-p "Press y to start a new game. Start a new game? ")
+      (yahtzee))))
 
 
 
@@ -831,6 +839,10 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
     ;; ================================================================
 
     (when (and (= yahtzee-moves-left 0)
+	       ;; the above condition alone is not sufficient because
+	       ;; when there are zero moves left, we can still perform
+	       ;; an action that calls `yahtzee-display-board', and we
+	       ;; are constantly asked whether we want to save the game.
 	       (not yahtzee-game-over))
       (setq yahtzee-game-over t)
       (forward-line 3)
