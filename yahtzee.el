@@ -158,7 +158,7 @@ For example \"/path/to/scores/game-*.json\" would generate a file
   )
 
 (defun yahtzee-set-player-name (player-name)
-  "Add a new player and sets its name.
+  "Add a new player and set its name.
 PLAYER-NAME is set in the mini-buffer by the user."
   (interactive
    (list
@@ -470,6 +470,7 @@ Here I use a fixed score instead of the official sum of all dice."
 
 
 (defun yahtzee-initialize-fields-alist ()
+  "Initialize `yahtzee-fields-alist'."
   (setq yahtzee-fields-alist nil)
   (push '("chance" . yahtzee-chance-compute-score) yahtzee-fields-alist)
   (push '("minus" . yahtzee-minus-compute-score) yahtzee-fields-alist)
@@ -621,6 +622,7 @@ A bonus is awarded when the player scores at least
   (yahtzee-display-board))
 
 (defun yahtzee-new-game ()
+  "Start a new game."
   (interactive)
   (if (or yahtzee-game-over
 	  ;; before all players have finished their
