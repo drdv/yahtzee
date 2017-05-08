@@ -25,13 +25,14 @@
 ;;
 ;; add (require 'yahtzee) in your .emacs
 ;; M-x yahtzee  start a game
-;; C-n          add players
-;; C-r          reset players
+;; C-p          add players
+;; C-M-p        reset players
 ;; SPC          throw dice
 ;; {1,2,3,4,5}  hold outcome of {1,2,3,4,5}-th dice
 ;; UP/DOWN      select score to register
 ;; ENTER        register selected score
 ;; w            save the game (in json format)
+;; C-n          start a new game
 ;;
 ;; The score of a saved game can be loaded using `M-x yahtzee-load-game-score`.
 ;;
@@ -541,20 +542,21 @@ A bonus is awarded when the player scores at least
 
 (defvar yahtzee-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd       "1") 'yahtzee-dice-toggle-fix-free)
-    (define-key map (kbd       "2") 'yahtzee-dice-toggle-fix-free)
-    (define-key map (kbd       "3") 'yahtzee-dice-toggle-fix-free)
-    (define-key map (kbd       "4") 'yahtzee-dice-toggle-fix-free)
-    (define-key map (kbd       "5") 'yahtzee-dice-toggle-fix-free)
-    (define-key map (kbd   "<SPC>") 'yahtzee-dice-throw)
-    (define-key map (kbd  "<down>") 'yahtzee-select-next-field)
-    (define-key map (kbd    "<up>") 'yahtzee-select-previous-field)
-    (define-key map (kbd     "C-m") 'yahtzee-assign-score-to-field) ;; ENTER
-    (define-key map (kbd       ",") 'beginning-of-buffer)
-    (define-key map (kbd       ".") 'end-of-buffer)
-    (define-key map (kbd     "C-n") 'yahtzee-set-player-name)
-    (define-key map (kbd     "C-r") 'yahtzee-reset-players)
-    (define-key map (kbd       "w") 'yahtzee-save-game-score)
+    (define-key map (kbd         "1") 'yahtzee-dice-toggle-fix-free)
+    (define-key map (kbd         "2") 'yahtzee-dice-toggle-fix-free)
+    (define-key map (kbd         "3") 'yahtzee-dice-toggle-fix-free)
+    (define-key map (kbd         "4") 'yahtzee-dice-toggle-fix-free)
+    (define-key map (kbd         "5") 'yahtzee-dice-toggle-fix-free)
+    (define-key map (kbd     "<SPC>") 'yahtzee-dice-throw)
+    (define-key map (kbd    "<down>") 'yahtzee-select-next-field)
+    (define-key map (kbd      "<up>") 'yahtzee-select-previous-field)
+    (define-key map (kbd       "C-m") 'yahtzee-assign-score-to-field) ;; ENTER
+    (define-key map (kbd         ",") 'beginning-of-buffer)
+    (define-key map (kbd         ".") 'end-of-buffer)
+    (define-key map (kbd       "C-p") 'yahtzee-set-player-name)
+    (define-key map (kbd     "C-M-p") 'yahtzee-reset-players)
+    (define-key map (kbd       "C-n") 'yahtzee-new-game)
+    (define-key map (kbd         "w") 'yahtzee-save-game-score)
     ;; disable keys (for some reason setting to nil doesn't work)
     (define-key map (kbd  "<left>") 'yahtzee-do-nothing)
     (define-key map (kbd "<right>") 'yahtzee-do-nothing)
@@ -617,6 +619,11 @@ A bonus is awarded when the player scores at least
   (yahtzee-mode)
   (yahtzee-reset)
   (yahtzee-display-board))
+
+(defun yahtzee-new-game ()
+  (interactive)
+  (when (y-or-n-p "Press y to start a new game. Start a new game? ")
+    (yahtzee)))
 
 
 

@@ -16,11 +16,15 @@ class player():
         self.win   = [];
         self.loose = [];
         self.draw  = [];
+        self.best_score = 0
 
-    def set(self, winners, loosers):
+    def set(self, winners, loosers, score):
         if self.name in winners:
             self.win.extend(loosers)
             self.draw.extend([w for w in winners if w != self.name])
+
+            if self.best_score < score:
+                self.best_score = score
 
         if self.name in loosers:
             self.loose.extend(winners)
@@ -50,12 +54,17 @@ for file in glob.glob(filename_wildcard):
     loosers = [key[i] for i,j in enumerate(val) if j != max_score]
 
     for player in players:
-        player.set(winners, loosers)
+        player.set(winners, loosers, max_score)
 
 # ===========================================================================
 
 # display scores
+print("============================")
 for (player_i, player_j) in list(itertools.combinations(players,2)):
     player_i.result_against(player_j)
+print("============================")
+for player in players:
+    print("{0:s}: {1:d}".format(player.name, player.best_score))
+print("============================")
 
 ###EOF
