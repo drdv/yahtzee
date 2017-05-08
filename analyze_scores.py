@@ -46,9 +46,10 @@ class player():
     def show_result_against(self, opponent):
         W = len([x for x in self.win   if x == opponent.name])
         L = len([x for x in self.loose if x == opponent.name])
+        D = len([x for x in self.draw  if x == opponent.name])
 
-        if L+W > 0:
-            print('{0:17s}: {1:2d} - {2:2d}'.format(self.name + ' vs. ' + opponent.name, W, L))
+        if L+W+D > 0:
+            print('{0:17s}: {1:2d} - {2:2d} - {3:2d}'.format(self.name + ' vs. ' + opponent.name, W, L, D))
 
     def show_score(self):
         if self.number_of_games > 0:
@@ -78,13 +79,16 @@ for file in glob.glob(filename_wildcard):
 # ===========================================================================
 
 # display scores
-print("===============================")
+print("================================")
+print("                    W    L    D")
+print("--------------------------------")
 for (player_i, player_j) in list(itertools.combinations(players,2)):
     player_i.show_result_against(player_j)
-print("===============================")
+print("================================")
 print("                   average  max")
+print("--------------------------------")
 for player in players:
     player.show_score()
-print("===============================")
+print("================================")
 
 ###EOF
