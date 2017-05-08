@@ -47,18 +47,21 @@ class player():
         W = len([x for x in self.win   if x == opponent.name])
         L = len([x for x in self.loose if x == opponent.name])
 
-        print('{0:17s}: {1:2d} - {2:2d}'.format(self.name + ' vs. ' + opponent.name, W, L))
+        if L+W > 0:
+            print('{0:17s}: {1:2d} - {2:2d}'.format(self.name + ' vs. ' + opponent.name, W, L))
 
     def show_score(self):
-        print("{0:17s}: {1:2.2f}  ({2:3d})".format(self.name,
-                                                   self.total_score/self.number_of_games,
-                                                   self.best_score))
+        if self.number_of_games > 0:
+            print("{0:17s}: {1:2.2f}  ({2:3d})".format(self.name,
+                                                       self.total_score/self.number_of_games,
+                                                       self.best_score))
 
 # ===========================================================================
 
 players = [player('Elena'),
            player('Mitko'),
-           player('Marina')]
+           player('Marina'),
+           player('Tomas')]
 
 for file in glob.glob(filename_wildcard):
     with open(file) as data_file:
