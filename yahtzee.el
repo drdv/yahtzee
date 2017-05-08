@@ -73,7 +73,10 @@ assume: `yahtzee-number-of-players' <= 7.")
 Initially set to the numbe of fields in `yahtzee-fields-alist'.")
 
 (defvar yahtzee-number-of-dice-to-throw 5
-  "Number of dice to throw.")
+  "Number of dice to throw.
+This variable is used in the definition of `yahtzee-mode-map' so changing it
+after \"(require 'yahtzee)\" in ~/.emacs leades to \"dead\" key bindings.
+One could simply change it before \"(require 'yahtzee)\".")
 
 (defvar yahtzee-dice-max-attempt 3
   "Number of allowed dice throws per turn.")
