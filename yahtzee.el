@@ -72,7 +72,7 @@ assume: `yahtzee-number-of-players' <= 7.")
   "Number of moves left in the game.
 Initially set to the numbe of fields in `yahtzee-fields-alist'.")
 
-(defvar yahtzee-number-of-dice-to-throw 5
+(defvar yahtzee-number-of-dice-to-throw 7
   "Number of dice to throw.")
 
 (defvar yahtzee-dice-max-attempt 3
@@ -545,11 +545,8 @@ A bonus is awarded when the player scores at least
 
 (defvar yahtzee-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd         "1") 'yahtzee-dice-toggle-fix-free)
-    (define-key map (kbd         "2") 'yahtzee-dice-toggle-fix-free)
-    (define-key map (kbd         "3") 'yahtzee-dice-toggle-fix-free)
-    (define-key map (kbd         "4") 'yahtzee-dice-toggle-fix-free)
-    (define-key map (kbd         "5") 'yahtzee-dice-toggle-fix-free)
+    (dotimes (k yahtzee-number-of-dice-to-throw)
+      (define-key map (kbd  (number-to-string (1+ k))) 'yahtzee-dice-toggle-fix-free))
     (define-key map (kbd     "<SPC>") 'yahtzee-dice-throw)
     (define-key map (kbd    "<down>") 'yahtzee-select-next-field)
     (define-key map (kbd      "<up>") 'yahtzee-select-previous-field)
@@ -563,10 +560,9 @@ A bonus is awarded when the player scores at least
     ;; disable keys (for some reason setting to nil doesn't work)
     (define-key map (kbd  "<left>") 'yahtzee-do-nothing)
     (define-key map (kbd "<right>") 'yahtzee-do-nothing)
-    (define-key map (kbd       "6") 'yahtzee-do-nothing)
-    (define-key map (kbd       "7") 'yahtzee-do-nothing)
-    (define-key map (kbd       "8") 'yahtzee-do-nothing)
-    (define-key map (kbd       "9") 'yahtzee-do-nothing)
+    ;; disable the remaining keys to 9
+    (dolist (k (number-sequence yahtzee-number-of-dice-to-throw 8))
+      (define-key map (kbd  (number-to-string (1+ k))) 'yahtzee-do-nothing))
     map)
   "Keymap for yahtzee major mode.")
 
