@@ -1,3 +1,4 @@
+#!/usr/bin/python
 #
 # analyze the scores in the saved games
 #
@@ -34,7 +35,7 @@ class player():
         W = len([x for x in self.win   if x == opponent.name])
         L = len([x for x in self.loose if x == opponent.name])
 
-        print('{0:s} vs. {1:s}: {2:d} - {3:d}'.format(self.name, opponent.name, W, L))
+        print('{0:17s}: {1:2d} - {2:2d}'.format(self.name + ' vs. ' + opponent.name, W, L))
 
 # ===========================================================================
 
@@ -59,12 +60,12 @@ for file in glob.glob(filename_wildcard):
 # ===========================================================================
 
 # display scores
-print("============================")
+print("===============================")
 for (player_i, player_j) in list(itertools.combinations(players,2)):
     player_i.result_against(player_j)
-print("============================")
+print("===============================")
 for player in players:
-    print("{0:s}: {1:d}".format(player.name, player.best_score))
-print("============================")
+    print("{0:17s}: {1:3d}".format(player.name, player.best_score))
+print("===============================")
 
 ###EOF
