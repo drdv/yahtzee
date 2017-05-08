@@ -60,8 +60,7 @@ class player():
 
 players = [player('Elena'),
            player('Mitko'),
-           player('Marina'),
-           player('Tomas')]
+           player('Marina')]
 
 for file in glob.glob(filename_wildcard):
     with open(file) as data_file:
