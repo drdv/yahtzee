@@ -132,6 +132,9 @@ For example \"/path/to/scores/game-*.json\" would generate a file
 (defvar yahtzee-game-start-time nil
   "Records the time when the game started.")
 
+(defvar yahtzee-player-time nil
+  "Vector [(player-move-start-time . player-game-time), ...].")
+
 
 
 (defface yahtzee-face '((t . (:background "khaki"
@@ -233,6 +236,14 @@ Display a warning if the selected field already has been assigned a score."
     (setq yahtzee-selected-field nil)
     (when (= yahtzee-active-player (1- yahtzee-number-of-players))
       (setq yahtzee-moves-left (1- yahtzee-moves-left)))
+
+    ;; measure time for current player move
+    (let* ((time-cell (elt yahtzee-player-time yahtzee-active-player))
+	   (player-game-time (cdr time-cell))
+	   (player-move-start-time (car time-cell))
+	   (elapsed (float-time (time-subtract (current-time) player-move-start-time))))
+      (setcdr time-cell (+ player-game-time elapsed)))
+
     (yahtzee-goto-next-player)))
 
 (defun yahtzee-dice-toggle-fix-free ()
@@ -253,6 +264,12 @@ Display a warning if the selected field already has been assigned a score."
 	     ;; not all dice are fixed
 	     (not (= (length yahtzee-dice-outcomes-fixed)
 			     yahtzee-number-of-dice-to-throw)))
+
+    ;; start measuring time after first throw of player
+    ;; see `yahtzee-assign-score-to-field' for the time measurement
+    (when (= yahtzee-dice-thrown-number 0)
+      (setcar (elt yahtzee-player-time yahtzee-active-player) (current-time)))
+
     (dotimes (k yahtzee-number-of-dice-to-throw)
       (when (not (member k yahtzee-dice-outcomes-fixed))
 	(aset yahtzee-dice-outcomes
@@ -597,11 +614,21 @@ A bonus is awarded when the player scores at least
   (setq yahtzee-scores (make-vector yahtzee-number-of-players nil))
   (dotimes (player yahtzee-number-of-players)
     ;; initialize scores-alist with each field set to nil
-    (let (field-name scores-alist)
+    (let (field-name
+	  scores-alist)
       (dolist (field-pair yahtzee-fields-alist)
 	(setq field-name (car field-pair))
 	(push `(,field-name . nil) scores-alist))
       (aset yahtzee-scores player scores-alist)))
+  )
+
+(defun yahtzee-initialize-time ()
+  "Initialize player time for all players to nil."
+  ;; initialize each alist to nil
+  (setq yahtzee-player-time (make-vector yahtzee-number-of-players nil))
+  (dotimes (player yahtzee-number-of-players)
+    ;; (player-move-start-time . player-game-time)
+    (aset yahtzee-player-time player (cons nil 0)))
   )
 
 (defun yahtzee-reset ()
@@ -621,6 +648,7 @@ A bonus is awarded when the player scores at least
 
   (yahtzee-initialize-fields-alist)
   (yahtzee-initialize-scores)
+  (yahtzee-initialize-time)
   (setq yahtzee-loaded-game nil)
   (setq yahtzee-game-over nil)
   (setq yahtzee-active-player 0)
@@ -844,7 +872,7 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
     (end-of-line)
     (insert fields-dice-separation)
     (dotimes (player yahtzee-number-of-players)
-      (insert (format "(%s) %s: %d (includes BONUS: %d)"
+      (insert (format "(%s) %-8s: %3d (includes BONUS: %d)"
 		      (nth player yahtzee-players-labels)
 		      (nth player yahtzee-players-names)
 		      (+ (yahtzee-compute-current-score player)
@@ -870,7 +898,7 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
 	       ;; are constantly asked whether we want to save the game.
 	       (not yahtzee-game-over))
       (setq yahtzee-game-over t)
-      (forward-line 3)
+      (forward-line 2)
       (end-of-line)
       (insert fields-dice-separation)
       (let ((top-score 0)
@@ -903,11 +931,26 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
 	  (put-text-property point (+ point 10) 'font-lock-face 'yahtzee-face)))
 
       ;; game duration
-      (let ((elapsed (float-time (time-subtract (current-time) yahtzee-game-start-time))))
-	(forward-line 2)
+      (when (not yahtzee-loaded-game)
+	(let ((elapsed (float-time (time-subtract (current-time) yahtzee-game-start-time))))
+	  (forward-line 2)
+	  (end-of-line)
+	  (insert fields-dice-separation)
+	  (insert (format "total game time      : %.2f min." (/ elapsed 60))))
+
+	(forward-line)
 	(end-of-line)
 	(insert fields-dice-separation)
-	(insert (format "game duration = %.2f min." (/ elapsed 60))))
+	(insert (format "average time per move: "))
+	(dotimes (player yahtzee-number-of-players)
+	  (let ((player-time (cdr (elt yahtzee-player-time player))))
+	    (forward-line)
+	    (end-of-line)
+	    (insert (concat fields-dice-separation "  - "))
+	    (insert (format "%-8s: %f sec."
+			    (nth player yahtzee-players-names)
+			    (/ player-time (length yahtzee-fields-alist))))
+	    )))
 
       (when (and (not yahtzee-loaded-game)
 		 (y-or-n-p "Press y to save the game.  Save the game? "))
