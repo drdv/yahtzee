@@ -84,7 +84,7 @@ One could simply change it before \"(require 'yahtzee)\".")
 (defvar yahtzee-dice-thrown-number nil
   "Number of throws performed.")
 
-(defvar yahtzee-dice-possible-outcomes (number-sequence 1 6)
+(defconst yahtzee-dice-possible-outcomes (number-sequence 1 6)
   "Possible outcomes of each dice roll.")
 
 (defvar yahtzee-dice-outcomes (make-vector yahtzee-number-of-dice-to-throw nil)
@@ -316,8 +316,10 @@ This score would be modified untill fixed."
     'yahtzee-face))
 
 (defun yahtzee-dice-count ()
-  "Count the number of occurances of each output.
-The possible outputs are specified in `yahtzee-dice-possible-outcomes'."
+  "Count the number of occurrences of all possible dice outputs.
+The possible outputs are specified in `yahtzee-dice-possible-outcomes'.
+`yahtzee-dice-outcomes-counts'[k] stores the number of occurrences of
+`yahtzee-dice-possible-outcomes'[k]."
   (let ((i 0))
     (dolist (j yahtzee-dice-possible-outcomes)
       (aset yahtzee-dice-outcomes-counts i (cl-count j yahtzee-dice-outcomes))
@@ -403,6 +405,19 @@ Here I use a fixed score instead of the official sum of all dice."
     (if (= (elt counts 0) 5)
 	50
       0)))
+
+;; This is a more general way of implementing the yahtzee-k-compute-score
+;; function below. It doesn't care about the order of numbers in
+;; `yahtzee-dice-possible-outcomes' but it takes an input argument and
+;; in `yahtzee-fields-alist' I want each function associated with a field
+;; to be without input arguments (i.e., a function dedicated to the particular
+;; field). So, I would have to live with the manual implementation below.
+(defun yahtzee-number-compute-score (index)
+  "Compute score for number at INDEX in `yahtzee-dice-possible-outcomes'."
+  (yahtzee-dice-count)
+  (let ((counts (copy-sequence yahtzee-dice-outcomes-counts))
+	(number (nth index yahtzee-dice-possible-outcomes)))
+    (* number (elt counts index))))
 
 (defun yahtzee-1-compute-score ()
   "Compute score for 1's."
