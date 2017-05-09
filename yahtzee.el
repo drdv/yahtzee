@@ -153,7 +153,7 @@ For example \"/path/to/scores/game-*.json\" would generate a file
   :group 'yahtzee-faces)
 
 (defface yahtzee-face-user-arrow '((t . (:foreground "red")))
-  "Face for selected stuff."
+  "Face for the arrow indicating which user is active."
   :group 'yahtzee-faces)
 
 
