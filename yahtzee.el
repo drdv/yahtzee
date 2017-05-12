@@ -124,7 +124,7 @@ The format should be [((field-name . score)...)...], i.e.,
   "Wild card pattern used to generate files for saving games automatically.
 If set to nil, game is saved interactively (i.e., user specifies filename).
 For example \"/path/to/scores/game-*.json\" would generate a file
-\"/path/to/scores/game-004.json\" if there are already three saved files.")
+\"/path/to/scores/game-0004.json\" if there are already three saved files.")
 
 (defvar yahtzee-game-over nil
   "Non-nil indicates that the game has ended.")
@@ -969,7 +969,7 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
 						      "\" | wc -l"))
 					     0 -1)))
 		 (filename (replace-regexp-in-string "\*"
-						     (format "%03d" (1+ current-number))
+						     (format "%04d" (1+ current-number))
 						     "/Users/drdv/git/github/yahtzee/scores/game-*.json")))
 
 	    (yahtzee-save-game-score filename))))
