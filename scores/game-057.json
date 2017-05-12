@@ -1,0 +1,48 @@
+{
+  "players": [
+    "Elena",
+    "Mitko"
+  ],
+  "total-score": {
+    "Elena": 187,
+    "Mitko": 367
+  },
+  "scores": [
+    {
+      "chance": 11,
+      "minus": 18,
+      "plus": 24,
+      "rigole": 0,
+      "yams": 0,
+      "carre": 0,
+      "grande-suite": 35,
+      "petite-suite": 25,
+      "brelan": 25,
+      "full": 0,
+      "6": 12,
+      "5": 15,
+      "4": 4,
+      "3": 9,
+      "2": 6,
+      "1": 3
+    },
+    {
+      "chance": 23,
+      "minus": 16,
+      "plus": 27,
+      "rigole": 50,
+      "yams": 0,
+      "carre": 40,
+      "grande-suite": 35,
+      "petite-suite": 25,
+      "brelan": 27,
+      "full": 30,
+      "6": 18,
+      "5": 15,
+      "4": 12,
+      "3": 9,
+      "2": 6,
+      "1": 4
+    }
+  ]
+}
