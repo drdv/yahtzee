@@ -1,0 +1,28 @@
+{
+  "players": [
+    "Elena"
+  ],
+  "total-score": {
+    "Elena": 303
+  },
+  "scores": [
+    {
+      "chance": 24,
+      "minus": 16,
+      "plus": 24,
+      "rigole": 50,
+      "yams": 0,
+      "carre": 40,
+      "grande-suite": 35,
+      "petite-suite": 25,
+      "brelan": 0,
+      "full": 30,
+      "6": 18,
+      "5": 10,
+      "4": 12,
+      "3": 9,
+      "2": 8,
+      "1": 2
+    }
+  ]
+}
