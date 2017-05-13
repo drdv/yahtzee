@@ -483,6 +483,20 @@ Here I use a fixed score instead of the official sum of all dice."
 	(apply '+ (mapcar (lambda (x) x) yahtzee-dice-outcomes))
       0)))
 
+(defun yahtzee-two-pair-compute-score ()
+  "Compute score for two-pair (e.g., [5 5 1 3 3])."
+  (yahtzee-dice-count)
+  (let ((counts (sort (copy-sequence yahtzee-dice-outcomes-counts) '>)))
+    (if (or (and (= (elt counts 0) 2)
+		 (= (elt counts 1) 2))
+	    ;; full is two-pair as well
+	    (and (= (elt counts 0) 3)
+		 (= (elt counts 1) 2))
+	    ;; carre and yams are two-pair as well
+	    (<= 4 (elt counts 0) 5))
+	(apply '+ (mapcar (lambda (x) x) yahtzee-dice-outcomes))
+      0)))
+
 (defun yahtzee-plus-compute-score ()
   "Compute score for plus."
   (let ((score-plus (apply '+ (mapcar (lambda (x) x) yahtzee-dice-outcomes)))
@@ -519,6 +533,7 @@ Here I use a fixed score instead of the official sum of all dice."
   (push '("grande-suite" . yahtzee-grande-suite-compute-score) yahtzee-fields-alist)
   (push '("petite-suite" . yahtzee-petite-suite-compute-score) yahtzee-fields-alist)
   (push '("brelan" . yahtzee-brelan-compute-score) yahtzee-fields-alist)
+  ;; (push '("two-pair" . yahtzee-two-pair-compute-score) yahtzee-fields-alist)
   (push '("full" . yahtzee-full-compute-score) yahtzee-fields-alist)
   (push '("6" . yahtzee-6-compute-score) yahtzee-fields-alist)
   (push '("5" . yahtzee-5-compute-score) yahtzee-fields-alist)

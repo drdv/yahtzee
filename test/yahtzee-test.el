@@ -188,6 +188,23 @@
       (setq yahtzee-dice-outcomes (car pair))
       (should (equal (yahtzee-brelan-compute-score) (cdr pair))))))
 
+(ert-deftest test-yahtzee-two-pair-compute-score ()
+  "Test `yahtzee-two-pair-compute-score'."
+  (let ((test-pairs '(([1 1 6 6 6] . 20)
+		      ([1 6 1 6 1] . 15)
+		      ([6 6 6 6 2] . 26)
+		      ([6 2 6 2 1] . 17)
+		      ([1 1 2 3 2] .  9)
+		      ([1 1 2 1 1] .  6)
+		      ([1 1 1 1 1] .  5)
+		      ([1 3 1 2 2] .  9)
+		      ([1 3 2 2 2] .  0)
+		      ([1 2 1 3 4] .  0)
+		      )))
+    (dolist (pair test-pairs)
+      (setq yahtzee-dice-outcomes (car pair))
+      (should (equal (yahtzee-two-pair-compute-score) (cdr pair))))))
+
 (ert-deftest test-yahtzee-plus-compute-score ()
   "Test `yahtzee-plus-compute-score'."
   (let ((test-pairs '(([1 1 6 6 6] . 20)
