@@ -175,8 +175,7 @@ PLAYER-NAME is set in the mini-buffer by the user."
     (read-string "Player name: ")))
   ;; protect against unintended game restart
   (if (< yahtzee-moves-left (length yahtzee-fields-alist))
-      (message "Each player has already made a move!
-If you want to rename players, first restart the game using \"M-x yahtzee\".")
+      (message "Each player has already made a move! To rename players, start a new game.")
     (setq yahtzee-players-names (append yahtzee-players-names `(,player-name)))
     (setq yahtzee-number-of-players (length yahtzee-players-names))
     (yahtzee-reset)
