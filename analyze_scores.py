@@ -6,6 +6,7 @@
 import json
 import glob
 import itertools
+import bisect
 
 filename_wildcard = "./scores/game-*.json"
 
@@ -17,18 +18,21 @@ class player():
         self.win   = [];
         self.loose = [];
         self.draw  = [];
+        self.all_scores      = []
         self.best_score      = 0
         self.total_score     = 0
         self.number_of_games = 0
 
     def set(self, winners, loosers):
         if self.name in winners:
+            # list(loosers) is equivalent to list(loosers.keys())
             self.win.extend(list(loosers))
             self.draw.extend([key for key in winners.keys() if key != self.name])
 
             if self.best_score < winners[self.name]:
                 self.best_score = winners[self.name]
 
+            bisect.insort(self.all_scores, winners[self.name]) # preserve sorting
             self.total_score += winners[self.name]
             self.number_of_games += 1
 
@@ -39,6 +43,7 @@ class player():
             if self.best_score < loosers[self.name]:
                 self.best_score = loosers[self.name]
 
+            bisect.insort(self.all_scores, loosers[self.name])
             self.total_score += loosers[self.name]
             self.number_of_games += 1
 
