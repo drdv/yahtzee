@@ -995,7 +995,7 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
 
 (defun yahtzee-save-game-score (filename)
   "Store the game data in FILENAME (in json format)."
-  (interactive "fFilename: ")
+  (interactive "FFilename: ")
   (let ((json-encoding-pretty-print t)
 	score
 	name-score-pair)
