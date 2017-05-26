@@ -58,7 +58,7 @@
 (defvar yahtzee-number-of-players 1
   "Number of players (greater or equal to 1).")
 
-(defvar yahtzee-players-names nil
+(defvar yahtzee-players-names '("unknown")
   "List with names of players.")
 
 (defvar yahtzee-players-labels '("A" "B" "C" "D" "E" "F" "G")
@@ -162,7 +162,7 @@ For example \"/path/to/scores/game-*.json\" would generate a file
   "Reset back to the default player."
   (interactive)
   (setq yahtzee-number-of-players 1)
-  (setq yahtzee-players-names nil)
+  (setq yahtzee-players-names '("unknown"))
   (yahtzee-reset)
   (yahtzee-display-board)
   )
@@ -176,10 +176,16 @@ PLAYER-NAME is set in the mini-buffer by the user."
   ;; protect against unintended game restart
   (if (< yahtzee-moves-left (length yahtzee-fields-alist))
       (message "Each player has already made a move! To rename players, start a new game.")
-    (setq yahtzee-players-names (append yahtzee-players-names `(,player-name)))
-    (setq yahtzee-number-of-players (length yahtzee-players-names))
-    (yahtzee-reset)
-    (yahtzee-display-board)))
+    ;; check is player-name already exists in yahtzee-players-names
+    (if (member player-name yahtzee-players-names)
+	(message "Player %s already exists!" player-name)
+      ;; when there is only an "unknown" player replace it
+      (when (equal yahtzee-players-names '("unknown"))
+	(setq yahtzee-players-names nil))
+      (setq yahtzee-players-names (append yahtzee-players-names `(,player-name)))
+      (setq yahtzee-number-of-players (length yahtzee-players-names))
+      (yahtzee-reset)
+      (yahtzee-display-board))))
 
 (defun yahtzee-select-next-field ()
   "Select the next field without a fixed score."
@@ -651,7 +657,7 @@ A bonus is awarded when the player scores at least
   ;; ====================================================================
   ;; handle players
   ;; ====================================================================
-  ;; handle the case when the used has set the names of players but not their number
+  ;; handle the case when the user has set the names of players but not their number
   (when (> (length yahtzee-players-names)
 	   yahtzee-number-of-players)
     (setq yahtzee-number-of-players (length yahtzee-players-names)))
