@@ -83,60 +83,60 @@ The field-function is called without arguments and should return score given
 ;; the variables below are not meant to be set by the user
 ;; =============================================================================
 
-(defvar-local yahtzee-number-of-players 1
+(defvar yahtzee-number-of-players 1
   "Number of players (greater or equal to 1).
 The user is not meant to set this directly (but through setting
 `yahtzee-players-names').")
 
-(defvar-local yahtzee-players-labels (mapcar 'string
+(defvar yahtzee-players-labels (mapcar 'string
 					     "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
   "Short labels associated with names of players.")
 
-(defvar-local yahtzee-active-player nil
+(defvar yahtzee-active-player nil
   "Currently active player (integer from 0 to `yahtzee-number-of-players'-1).")
 
-(defvar-local yahtzee-moves-left nil
+(defvar yahtzee-moves-left nil
   "Number of moves left in the game.
 Initially set to the number of fields in `yahtzee-fields-alist'.")
 
-(defvar-local yahtzee-dice-thrown-number nil
+(defvar yahtzee-dice-thrown-number nil
   "Number of throws performed.")
 
 (defconst yahtzee-dice-possible-outcomes (number-sequence 1 6)
   "Possible outcomes of each dice roll.")
 
-(defvar-local yahtzee-dice-outcomes
+(defvar yahtzee-dice-outcomes
   (make-vector yahtzee-number-of-dice-to-throw nil)
   "Vector of outcomes of dice throws.")
 
-(defvar-local yahtzee-dice-outcomes-counts
+(defvar yahtzee-dice-outcomes-counts
   (make-vector (length yahtzee-dice-possible-outcomes) 0)
   "Number of occurrences of a dice throw outcome.
 Number of occurrences of `yahtzee-dice-possible-outcomes'[k] is stored
 in `yahtzee-dice-outcomes-counts'[k].")
 
-(defvar-local yahtzee-dice-outcomes-fixed nil
+(defvar yahtzee-dice-outcomes-fixed nil
   "A list of indexes of elements of `yahtzee-dice-outcomes' with fixed outcomes.
 That is, outcomes that cannot change during a throw.")
 
-(defvar-local yahtzee-selected-field nil
+(defvar yahtzee-selected-field nil
   "Name of field whose score is currently selected by the active player.")
 
-(defvar-local yahtzee-scores (make-vector yahtzee-number-of-players nil)
+(defvar yahtzee-scores (make-vector yahtzee-number-of-players nil)
   "Vector of alists of user scores.
 The format should be [((field-name . score)...)...], i.e.,
 `yahtzee-scores'[k] is the alist associated with the k-th user.")
 
-(defvar-local yahtzee-loaded-game nil
+(defvar yahtzee-loaded-game nil
   "Non-nil value indicates that the game was loaded.")
 
-(defvar-local yahtzee-game-over nil
+(defvar yahtzee-game-over nil
   "Non-nil indicates that the game has ended.")
 
-(defvar-local yahtzee-game-start-time nil
+(defvar yahtzee-game-start-time nil
   "Records the time when the game started.")
 
-(defvar-local yahtzee-player-time nil
+(defvar yahtzee-player-time nil
   "Vector [(player-move-start-time . player-game-time), ...].")
 
 (defconst yahtzee-buffer-name "*yahtzee*"
