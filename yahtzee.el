@@ -55,15 +55,40 @@
 
 (require 'json)
 
-(defvar-local yahtzee-number-of-players 1
+(defvar yahtzee-number-of-players 1
   "Number of players (greater or equal to 1).")
 
-(defvar-local yahtzee-players-names '("unknown")
+(defvar yahtzee-players-names '("unknown")
   "List with names of players.")
 
-(defvar-local yahtzee-players-labels '("A" "B" "C" "D" "E" "F" "G")
+(defvar yahtzee-players-labels '("A" "B" "C" "D" "E" "F" "G")
   "Short labels associated with names of players.
 assume: `yahtzee-number-of-players' <= 7.")
+
+(defvar yahtzee-number-of-dice-to-throw 5
+  "Number of dice to throw.
+This variable is used in the definition of `yahtzee-mode-map' so changing it
+after \"(require 'yahtzee)\" in ~/.emacs leads to \"dead\" key bindings.
+One could simply change it before \"(require 'yahtzee)\".")
+
+(defvar yahtzee-dice-max-attempt 3
+  "Number of allowed dice throws per turn.")
+
+(defvar yahtzee-fields-alist nil
+  "Association list with yahtzee fields.
+The format should be ((field-name . field-function)...).
+The field-names are e.g., \"1\", \"2\", \"full\", \"care\", \"straight\" etc.
+The field-function is called without arguments and should return score given
+`yahtzee-dice-outcomes'.")
+
+(defvar yahtzee-buffer-name "*yahtzee*"
+  "Name of buffer where to display the yahtzee game.")
+
+(defvar yahtzee-output-file-base nil
+  "Wild card pattern used to generate files for saving games automatically.
+If set to nil, game is saved interactively (i.e., user specifies filename).
+For example \"/path/to/scores/game-*.json\" would generate a file
+\"/path/to/scores/game-0004.json\" if there are already three saved files.")
 
 (defvar-local yahtzee-active-player nil
   "Currently active player (integer from 0 to `yahtzee-number-of-players'-1).")
@@ -71,15 +96,6 @@ assume: `yahtzee-number-of-players' <= 7.")
 (defvar-local yahtzee-moves-left nil
   "Number of moves left in the game.
 Initially set to the number of fields in `yahtzee-fields-alist'.")
-
-(defvar-local yahtzee-number-of-dice-to-throw 5
-  "Number of dice to throw.
-This variable is used in the definition of `yahtzee-mode-map' so changing it
-after \"(require 'yahtzee)\" in ~/.emacs leads to \"dead\" key bindings.
-One could simply change it before \"(require 'yahtzee)\".")
-
-(defvar-local yahtzee-dice-max-attempt 3
-  "Number of allowed dice throws per turn.")
 
 (defvar-local yahtzee-dice-thrown-number nil
   "Number of throws performed.")
@@ -101,13 +117,6 @@ in `yahtzee-dice-outcomes-counts'[k].")
   "A list of indexes of elements of `yahtzee-dice-outcomes' with fixed outcomes.
 That is, outcomes that cannot change during a throw.")
 
-(defvar-local yahtzee-fields-alist nil
-  "Association list with yahtzee fields.
-The format should be ((field-name . field-function)...).
-The field-names are e.g., \"1\", \"2\", \"full\", \"care\", \"straight\" etc.
-The field-function is called without arguments and should return score given
-`yahtzee-dice-outcomes'.")
-
 (defvar-local yahtzee-selected-field nil
   "Name of field whose score is currently selected by the active player.")
 
@@ -116,17 +125,8 @@ The field-function is called without arguments and should return score given
 The format should be [((field-name . score)...)...], i.e.,
 `yahtzee-scores'[k] is the alist associated with the k-th user.")
 
-(defvar-local yahtzee-buffer-name "*yahtzee*"
-  "Name of buffer where to display the yahtzee game.")
-
 (defvar-local yahtzee-loaded-game nil
   "Non-nil value indicates that the game was loaded.")
-
-(defvar-local yahtzee-output-file-base nil
-  "Wild card pattern used to generate files for saving games automatically.
-If set to nil, game is saved interactively (i.e., user specifies filename).
-For example \"/path/to/scores/game-*.json\" would generate a file
-\"/path/to/scores/game-0004.json\" if there are already three saved files.")
 
 (defvar-local yahtzee-game-over nil
   "Non-nil indicates that the game has ended.")
