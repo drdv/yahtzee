@@ -148,17 +148,17 @@ For example \"/path/to/scores/game-*.json\" would generate a file
 
 
 (defface yahtzee-face '((t . (:background "khaki"
-			      :foreground "black")))
+					  :foreground "black")))
   "Generic face."
   :group 'yahtzee-faces)
 
 (defface yahtzee-face-fixed '((t . (:background "burlywood"
-				    :foreground "black")))
+						:foreground "black")))
   "Face for fixed stuff."
   :group 'yahtzee-faces)
 
 (defface yahtzee-face-selected '((t . (:background "gold"
-				       :foreground "black")))
+						   :foreground "black")))
   "Face for selected stuff."
   :group 'yahtzee-faces)
 
@@ -174,8 +174,7 @@ For example \"/path/to/scores/game-*.json\" would generate a file
   (setq yahtzee-number-of-players 1)
   (setq yahtzee-players-names '("unknown"))
   (yahtzee-reset)
-  (yahtzee-display-board)
-  )
+  (yahtzee-display-board))
 
 (defun yahtzee-set-player-name (player-name)
   "Add a new player and set its name.
@@ -278,7 +277,7 @@ Display a warning if the selected field already has been assigned a score."
   (when (and (< yahtzee-dice-thrown-number yahtzee-dice-max-attempt)
 	     ;; not all dice are fixed
 	     (not (= (length yahtzee-dice-outcomes-fixed)
-			     yahtzee-number-of-dice-to-throw)))
+		     yahtzee-number-of-dice-to-throw)))
 
     ;; start measuring time after first throw of player
     ;; see `yahtzee-assign-score-to-field' for the time measurement
@@ -521,8 +520,7 @@ Here I use a fixed score instead of the official sum of all dice."
 	(if (> score-plus score-minus)
 	    score-plus
 	  0)
-      score-plus)
-    ))
+      score-plus)))
 
 (defun yahtzee-minus-compute-score ()
   "Compute score for minus."
@@ -532,8 +530,7 @@ Here I use a fixed score instead of the official sum of all dice."
 	(if (< score-minus score-plus)
 	    score-minus
 	  0)
-      score-minus)
-    ))
+      score-minus)))
 
 
 
@@ -556,8 +553,7 @@ Here I use a fixed score instead of the official sum of all dice."
   (push '("4" . yahtzee-4-compute-score) yahtzee-fields-alist)
   (push '("3" . yahtzee-3-compute-score) yahtzee-fields-alist)
   (push '("2" . yahtzee-2-compute-score) yahtzee-fields-alist)
-  (push '("1" . yahtzee-1-compute-score) yahtzee-fields-alist)
-  )
+  (push '("1" . yahtzee-1-compute-score) yahtzee-fields-alist))
 
 
 
@@ -649,8 +645,7 @@ A bonus is awarded when the player scores at least
       (dolist (field-pair yahtzee-fields-alist)
 	(setq field-name (car field-pair))
 	(push `(,field-name . nil) scores-alist))
-      (aset yahtzee-scores player scores-alist)))
-  )
+      (aset yahtzee-scores player scores-alist))))
 
 (defun yahtzee-initialize-time ()
   "Initialize player time for all players to nil."
@@ -658,8 +653,7 @@ A bonus is awarded when the player scores at least
   (setq yahtzee-player-time (make-vector yahtzee-number-of-players nil))
   (dotimes (player yahtzee-number-of-players)
     ;; (player-move-start-time . player-game-time)
-    (aset yahtzee-player-time player (cons nil 0)))
-  )
+    (aset yahtzee-player-time player (cons nil 0))))
 
 (defun yahtzee-reset ()
   "Reset/initialize a new game."
@@ -689,8 +683,7 @@ A bonus is awarded when the player scores at least
   (setq yahtzee-dice-outcomes
 	(make-vector yahtzee-number-of-dice-to-throw nil))
   (setq yahtzee-dice-outcomes-counts
-	(make-vector (length yahtzee-dice-possible-outcomes) 0))
-  )
+	(make-vector (length yahtzee-dice-possible-outcomes) 0)))
 
 (defun yahtzee ()
   "Start a new game."
@@ -740,8 +733,7 @@ A bonus is awarded when the player scores at least
 			 (equal yahtzee-selected-field field-name))
 		(put-text-property (+ point 1) (+ point 8) 'font-lock-face 'yahtzee-face-selected))))
 	;; ELSE (other players)
-	(insert "|       ")))
-    ))
+	(insert "|       ")))))
 
 (defun yahtzee-display-board (&optional only-scores)
   "Display the yahtzee board.
@@ -762,8 +754,7 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
     (insert "+----------------+\n")
     (dotimes (player yahtzee-number-of-players)
       ;; (insert (format "|  %2d   " (1+ player)))
-      (insert (format "|  (%s)  " (nth player yahtzee-players-labels)))
-      )
+      (insert (format "|  (%s)  " (nth player yahtzee-players-labels))))
     (insert "|   field names  |\n")
 
     (dolist (field yahtzee-fields-alist)
@@ -872,9 +863,7 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
       (insert "   +-------+")
       (forward-line)
       (end-of-line)
-      (insert "     #throws")
-
-      )
+      (insert "     #throws"))
 
     ;; ================================================================
     ;; third, depict the number of moves left and the names of players
@@ -892,8 +881,7 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
       (forward-line)
       (end-of-line)
       (insert fields-dice-separation)
-      (insert "+-----------------+")
-      )
+      (insert "+-----------------+"))
 
     (when only-scores
       (goto-char (point-min)))
@@ -990,22 +978,19 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
 	  ;; filename      : the newly generated name
 	  (let* ((current-number (string-to-number
 				  (substring ;; "remove \n"
-					     (shell-command-to-string
-					      ;; count number of files
-					      (concat "find "
-						      (file-name-directory yahtzee-output-file-base)
-						      " -name \""
-						      (file-name-nondirectory yahtzee-output-file-base)
-						      "\" | wc -l"))
-					     0 -1)))
+				   (shell-command-to-string
+				    ;; count number of files
+				    (concat "find "
+					    (file-name-directory yahtzee-output-file-base)
+					    " -name \""
+					    (file-name-nondirectory yahtzee-output-file-base)
+					    "\" | wc -l"))
+				   0 -1)))
 		 (filename (replace-regexp-in-string "\*"
 						     (format "%04d" (1+ current-number))
 						     "/Users/drdv/git/github/yahtzee/scores/game-*.json")))
 
-	    (yahtzee-save-game-score filename))))
-	)
-
-    ))
+	    (yahtzee-save-game-score filename)))))))
 
 
 
@@ -1068,9 +1053,7 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
     (switch-to-buffer yahtzee-buffer-name)
     (buffer-disable-undo yahtzee-buffer-name)
     (yahtzee-mode)
-    (yahtzee-display-board t)
-
-    ))
+    (yahtzee-display-board t)))
 
 
 
