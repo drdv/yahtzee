@@ -681,10 +681,10 @@ A bonus is awarded when the player scores at least
   ;; ====================================================================
   ;; handle players
   ;; ====================================================================
-  ;; handle the case when the user has set the names of players
-  ;; but not their number
-  (when (> (length yahtzee-players-names)
-	   yahtzee-number-of-players)
+  ;; when yahtzee-number-of-players != (length yahtzee-players-names)
+  ;; set yahtzee-number-of-players = (length yahtzee-players-names)
+  (when (not (= (length yahtzee-players-names)
+		yahtzee-number-of-players))
     (setq yahtzee-number-of-players (length yahtzee-players-names)))
 
   (when (> yahtzee-number-of-players 7)
