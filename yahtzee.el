@@ -40,7 +40,6 @@
 ;;
 ;; The user might want to set the following variables (see docstrings)
 ;;   - `yahtzee-output-file-base'
-;;   - `yahtzee-number-of-players' (for setting number of players )
 ;;   - `yahtzee-players-names'     (number of players and their names)
 ;;   - `yahtzee-fields-alist'      (for adding extra fields)
 ;;
