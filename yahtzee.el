@@ -55,87 +55,97 @@
 
 (require 'json)
 
-(defvar yahtzee-number-of-players 1
+(defvar-local yahtzee-number-of-players 1
   "Number of players (greater or equal to 1).")
 
-(defvar yahtzee-players-names '("unknown")
+(defvar-local yahtzee-players-names '("unknown")
   "List with names of players.")
 
-(defvar yahtzee-players-labels '("A" "B" "C" "D" "E" "F" "G")
+(defvar-local yahtzee-players-labels '("A" "B" "C" "D" "E" "F" "G")
   "Short lables associated with names of players.
 assume: `yahtzee-number-of-players' <= 7.")
 
-(defvar yahtzee-active-player nil
+(defvar-local yahtzee-active-player nil
   "Currently active player (integer from 0 to `yahtzee-number-of-players' - 1).")
 
-(defvar yahtzee-moves-left nil
+(defvar-local yahtzee-moves-left nil
   "Number of moves left in the game.
 Initially set to the numbe of fields in `yahtzee-fields-alist'.")
 
-(defvar yahtzee-number-of-dice-to-throw 5
+(defvar-local yahtzee-number-of-dice-to-throw 5
   "Number of dice to throw.
 This variable is used in the definition of `yahtzee-mode-map' so changing it
 after \"(require 'yahtzee)\" in ~/.emacs leades to \"dead\" key bindings.
 One could simply change it before \"(require 'yahtzee)\".")
 
-(defvar yahtzee-dice-max-attempt 3
+(defvar-local yahtzee-dice-max-attempt 3
   "Number of allowed dice throws per turn.")
 
-(defvar yahtzee-dice-thrown-number nil
+(defvar-local yahtzee-dice-thrown-number nil
   "Number of throws performed.")
 
 (defconst yahtzee-dice-possible-outcomes (number-sequence 1 6)
   "Possible outcomes of each dice roll.")
 
-(defvar yahtzee-dice-outcomes (make-vector yahtzee-number-of-dice-to-throw nil)
+(defvar-local yahtzee-dice-outcomes (make-vector yahtzee-number-of-dice-to-throw nil)
   "Vector of outcomes of dice throws.")
 
-(defvar yahtzee-dice-outcomes-counts (make-vector (length yahtzee-dice-possible-outcomes) 0)
+(defvar-local yahtzee-dice-outcomes-counts (make-vector (length yahtzee-dice-possible-outcomes) 0)
   "Number of occurrences of a dice throw outcome.
 Number of occurrences of `yahtzee-dice-possible-outcomes'[k] is stored
 in `yahtzee-dice-outcomes-counts'[k].")
 
-(defvar yahtzee-dice-outcomes-fixed nil
+(defvar-local yahtzee-dice-outcomes-fixed nil
   "A list of indexes of elements of `yahtzee-dice-outcomes' with fixed outcomes.
 That is, outcomes that cannot change during a throw.")
 
-(defvar yahtzee-fields-alist nil
+(defvar-local yahtzee-fields-alist nil
   "Association list with yahtzee fields.
 The format should be ((field-name . field-function)...).
 The field-names are e.g., \"1\", \"2\", \"full\", \"care\", \"straight\" etc.
 The field-function is called without arguments and should return score given
 `yahtzee-dice-outcomes'.")
 
-(defvar yahtzee-selected-field nil
+(defvar-local yahtzee-selected-field nil
   "Name of field whose score is currently selected by the active player.")
 
-(defvar yahtzee-scores (make-vector yahtzee-number-of-players nil)
+(defvar-local yahtzee-scores (make-vector yahtzee-number-of-players nil)
   "Vector of alists of user scores.
 The format should be [((field-name . score)...)...], i.e.,
 `yahtzee-scores'[k] is the alist associated with the k-th user.")
 
-(defvar yahtzee-buffer-name "*yahtzee*"
+(defvar-local yahtzee-buffer-name "*yahtzee*"
   "Name of buffer where to display the yahtzee game.")
 
-(defvar yahtzee-loaded-game nil
+(defvar-local yahtzee-loaded-game nil
   "Non-nil value indicates that the game was loaded.")
 
-(defvar yahtzee-output-file-base nil
+(defvar-local yahtzee-output-file-base nil
   "Wild card pattern used to generate files for saving games automatically.
 If set to nil, game is saved interactively (i.e., user specifies filename).
 For example \"/path/to/scores/game-*.json\" would generate a file
 \"/path/to/scores/game-0004.json\" if there are already three saved files.")
 
-(defvar yahtzee-game-over nil
+(defvar-local yahtzee-game-over nil
   "Non-nil indicates that the game has ended.")
 
-(defvar yahtzee-game-start-time nil
+(defvar-local yahtzee-game-start-time nil
   "Records the time when the game started.")
 
-(defvar yahtzee-player-time nil
+(defvar-local yahtzee-player-time nil
   "Vector [(player-move-start-time . player-game-time), ...].")
 
 
+
+(defgroup yahtzee nil
+  "The yahtzee game."
+  :group 'games)
+
+(defgroup yahtzee-faces nil
+  "The yahtzee game related phases."
+  :group 'yahtzee
+  :group 'faces)
+
 
 (defface yahtzee-face '((t . (:background "khaki"
 			      :foreground "black")))
