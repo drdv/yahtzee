@@ -55,15 +55,8 @@
 
 (require 'json)
 
-(defvar yahtzee-number-of-players 1
-  "Number of players (greater or equal to 1).")
-
 (defvar yahtzee-players-names '("unknown")
   "List with names of players.")
-
-(defvar yahtzee-players-labels '("A" "B" "C" "D" "E" "F" "G")
-  "Short labels associated with names of players.
-assume: `yahtzee-number-of-players' <= 7.")
 
 (defvar yahtzee-number-of-dice-to-throw 5
   "Number of dice to throw.
@@ -90,6 +83,15 @@ The field-function is called without arguments and should return score given
 ;; =============================================================================
 ;; the variables below are not meant to be set by the user
 ;; =============================================================================
+
+(defvar-local yahtzee-number-of-players 1
+  "Number of players (greater or equal to 1).
+The user is not meant to set this directly (but through setting
+`yahtzee-players-names').")
+
+(defvar-local yahtzee-players-labels (mapcar 'string
+					     "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+  "Short labels associated with names of players.")
 
 (defvar-local yahtzee-active-player nil
   "Currently active player (integer from 0 to `yahtzee-number-of-players'-1).")
@@ -686,9 +688,6 @@ A bonus is awarded when the player scores at least
   (when (not (= (length yahtzee-players-names)
 		yahtzee-number-of-players))
     (setq yahtzee-number-of-players (length yahtzee-players-names)))
-
-  (when (> yahtzee-number-of-players 7)
-    (error "Add more labels to variable `yahtzee-players-labels'"))
   ;; ====================================================================
 
   (yahtzee-initialize-fields-alist)
