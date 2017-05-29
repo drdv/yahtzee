@@ -44,12 +44,12 @@
 ;;   - `yahtzee-players-names'     (number of players and their names)
 ;;   - `yahtzee-fields-alist'      (for adding extra fields)
 ;;
-;; Note: personally I don't enjoy playing with "Yahtzee bonuses" and "Joker rules"
-;;       so they are not implemented (even thought they are simple to include).
-;;       Only the "63 bonus" is available (see `yahtzee-compute-bonus').  Furthermore,
-;;       some scores differ from the official ones.  Changing all this can be done by
-;;       simply modifying the corresponding functions in the definition of
-;;       `yahtzee-fields-alist'.
+;; Note: personally I don't enjoy playing with "Yahtzee bonuses" and "Joker
+;;       rules" so they are not implemented (even thought they are simple to
+;;       include).  Only the "63 bonus" is available (see
+;;       `yahtzee-compute-bonus').  Furthermore, some scores differ from the
+;;       official ones.  Changing all this can be done by simply modifying the
+;;       corresponding functions in the definition of `yahtzee-fields-alist'.
 
 ;;; Code:
 
@@ -66,7 +66,7 @@
 assume: `yahtzee-number-of-players' <= 7.")
 
 (defvar-local yahtzee-active-player nil
-  "Currently active player (integer from 0 to `yahtzee-number-of-players' - 1).")
+  "Currently active player (integer from 0 to `yahtzee-number-of-players'-1).")
 
 (defvar-local yahtzee-moves-left nil
   "Number of moves left in the game.
@@ -87,10 +87,12 @@ One could simply change it before \"(require 'yahtzee)\".")
 (defconst yahtzee-dice-possible-outcomes (number-sequence 1 6)
   "Possible outcomes of each dice roll.")
 
-(defvar-local yahtzee-dice-outcomes (make-vector yahtzee-number-of-dice-to-throw nil)
+(defvar-local yahtzee-dice-outcomes
+  (make-vector yahtzee-number-of-dice-to-throw nil)
   "Vector of outcomes of dice throws.")
 
-(defvar-local yahtzee-dice-outcomes-counts (make-vector (length yahtzee-dice-possible-outcomes) 0)
+(defvar-local yahtzee-dice-outcomes-counts
+  (make-vector (length yahtzee-dice-possible-outcomes) 0)
   "Number of occurrences of a dice throw outcome.
 Number of occurrences of `yahtzee-dice-possible-outcomes'[k] is stored
 in `yahtzee-dice-outcomes-counts'[k].")
@@ -184,14 +186,16 @@ PLAYER-NAME is set in the mini-buffer by the user."
     (read-string "Player name: ")))
   ;; protect against unintended game restart
   (if (< yahtzee-moves-left (length yahtzee-fields-alist))
-      (message "Each player has already made a move! To rename players, start a new game.")
+      (message "Each player has already made a move! \
+To rename players, start a new game.")
     ;; check is player-name already exists in yahtzee-players-names
     (if (member player-name yahtzee-players-names)
 	(message "Player %s already exists!" player-name)
       ;; when there is only an "unknown" player replace it
       (when (equal yahtzee-players-names '("unknown"))
 	(setq yahtzee-players-names nil))
-      (setq yahtzee-players-names (append yahtzee-players-names `(,player-name)))
+      (setq yahtzee-players-names (append yahtzee-players-names
+					  `(,player-name)))
       (setq yahtzee-number-of-players (length yahtzee-players-names))
       (yahtzee-reset)
       (yahtzee-display-board))))
@@ -202,15 +206,18 @@ PLAYER-NAME is set in the mini-buffer by the user."
   (when (not (= yahtzee-dice-thrown-number 0))
     (if (not yahtzee-selected-field)
 	(setq yahtzee-selected-field (caar yahtzee-fields-alist))
-      ;; get index in yahtzee-fields-alist of a cons cell with key yahtzee-selected-field
+      ;; get index in yahtzee-fields-alist of a cons cell with key
+      ;; yahtzee-selected-field
       ;; https://emacs.stackexchange.com/questions/10492/how-to-get-element-number-in-a-list
-      ;; probably not the best way to implement it but should do for the moment ...
-      (let ((index (cl-position (assoc yahtzee-selected-field yahtzee-fields-alist)
+      ;; probably not the best way to implement it but should do for the moment
+      (let ((index (cl-position (assoc yahtzee-selected-field
+				       yahtzee-fields-alist)
 				yahtzee-fields-alist
 				:test 'equal)))
 	;; below I rely on the fact that e.g., (nth 5 '(1 2 3)) returns nil
 	;; when `yahtzee-selected-field' is nil, no score is selected
-	(setq yahtzee-selected-field (car (nth (1+ index) yahtzee-fields-alist)))))
+	(setq yahtzee-selected-field
+	      (car (nth (1+ index) yahtzee-fields-alist)))))
 
     ;; make sure that we don't land on a field with already fixed score
     (when (and (yahtzee-get-score yahtzee-selected-field yahtzee-active-player)
@@ -225,12 +232,14 @@ Note: see the comments in `yahtzee-select-next-field'."
   (when (not (= yahtzee-dice-thrown-number 0))
     (if (not yahtzee-selected-field)
 	(setq yahtzee-selected-field (caar (last yahtzee-fields-alist)))
-      (let ((index (cl-position (assoc yahtzee-selected-field yahtzee-fields-alist)
-				yahtzee-fields-alist
-				:test 'equal)))
+      (let ((index (cl-position
+		    (assoc yahtzee-selected-field yahtzee-fields-alist)
+		    yahtzee-fields-alist
+		    :test 'equal)))
 	(if (= index 0)
 	    (setq yahtzee-selected-field nil)
-	  (setq yahtzee-selected-field (car (nth (1- index) yahtzee-fields-alist))))))
+	  (setq yahtzee-selected-field (car (nth (1- index)
+						 yahtzee-fields-alist))))))
 
     (when (and (yahtzee-get-score yahtzee-selected-field yahtzee-active-player)
 	       (> yahtzee-moves-left 0))
@@ -255,7 +264,8 @@ Display a warning if the selected field already has been assigned a score."
     (let* ((time-cell (elt yahtzee-player-time yahtzee-active-player))
 	   (player-game-time (cdr time-cell))
 	   (player-move-start-time (car time-cell))
-	   (elapsed (float-time (time-subtract (current-time) player-move-start-time))))
+	   (elapsed (float-time (time-subtract (current-time)
+					       player-move-start-time))))
       (setcdr time-cell (+ player-game-time elapsed)))
 
     (yahtzee-goto-next-player)))
@@ -421,7 +431,9 @@ Here I use a fixed score instead of the official sum of all dice."
 	;; 1. convert the vector yahtzee-dice-outcomes to a list
 	;; 2. delete duplicates from the list
 	;; 3. sort the list and assign in to the variable unique
-	(unique (sort (delete-dups (mapcar (lambda (x) x) yahtzee-dice-outcomes)) '<)))
+	(unique (sort
+		 (delete-dups (mapcar (lambda (x) x) yahtzee-dice-outcomes))
+		 '<)))
     (if (and (= 4 (elt counts 0))
 	     (or (equal unique '(1 6))
 		 (equal unique '(2 5))
@@ -543,8 +555,10 @@ Here I use a fixed score instead of the official sum of all dice."
   (push '("rigole" . yahtzee-rigole-compute-score) yahtzee-fields-alist)
   (push '("yams" . yahtzee-yams-compute-score) yahtzee-fields-alist)
   (push '("carre" . yahtzee-carre-compute-score) yahtzee-fields-alist)
-  (push '("grande-suite" . yahtzee-grande-suite-compute-score) yahtzee-fields-alist)
-  (push '("petite-suite" . yahtzee-petite-suite-compute-score) yahtzee-fields-alist)
+  (push '("grande-suite" . yahtzee-grande-suite-compute-score)
+	yahtzee-fields-alist)
+  (push '("petite-suite" . yahtzee-petite-suite-compute-score)
+	yahtzee-fields-alist)
   (push '("brelan" . yahtzee-brelan-compute-score) yahtzee-fields-alist)
   ;; (push '("two-pair" . yahtzee-two-pair-compute-score) yahtzee-fields-alist)
   (push '("full" . yahtzee-full-compute-score) yahtzee-fields-alist)
@@ -612,7 +626,10 @@ A bonus is awarded when the player scores at least
 (defvar yahtzee-mode-map
   (let ((map (make-sparse-keymap)))
     (dotimes (k yahtzee-number-of-dice-to-throw)
-      (define-key map (kbd  (number-to-string (1+ k))) 'yahtzee-dice-toggle-fix-free))
+      (define-key
+	map
+	(kbd  (number-to-string (1+ k)))
+	'yahtzee-dice-toggle-fix-free))
     (define-key map (kbd     "<SPC>") 'yahtzee-dice-throw)
     (define-key map (kbd    "<down>") 'yahtzee-select-next-field)
     (define-key map (kbd      "<up>") 'yahtzee-select-previous-field)
@@ -661,7 +678,8 @@ A bonus is awarded when the player scores at least
   ;; ====================================================================
   ;; handle players
   ;; ====================================================================
-  ;; handle the case when the user has set the names of players but not their number
+  ;; handle the case when the user has set the names of players
+  ;; but not their number
   (when (> (length yahtzee-players-names)
 	   yahtzee-number-of-players)
     (setq yahtzee-number-of-players (length yahtzee-players-names)))
@@ -718,7 +736,10 @@ A bonus is awarded when the player scores at least
 	;; THEN
 	(let ((point (point)))
 	  (insert (format "|  %2d   " score))
-	  (put-text-property (+ point 1) (+ point 8) 'font-lock-face 'yahtzee-face-fixed))
+	  (put-text-property (+ point 1)
+			     (+ point 8)
+			     'font-lock-face
+			     'yahtzee-face-fixed))
       ;; ELSE
       ;; first handle the case when `yahtzee-active-player' is nil
       ;; (this happens when we load games that were saved before they ended)
@@ -728,10 +749,12 @@ A bonus is awarded when the player scores at least
 	  (if (= yahtzee-dice-thrown-number 0)
 	      (insert (format "|       "))
 	    (let ((point (point)))
-	      (insert (format "|  %2d   " (yahtzee-field-compute-score field-name)))
+	      (insert (format "|  %2d   "
+			      (yahtzee-field-compute-score field-name)))
 	      (when (and yahtzee-selected-field
 			 (equal yahtzee-selected-field field-name))
-		(put-text-property (+ point 1) (+ point 8) 'font-lock-face 'yahtzee-face-selected))))
+		(put-text-property (+ point 1) (+ point 8)
+		 'font-lock-face 'yahtzee-face-selected))))
 	;; ELSE (other players)
 	(insert "|       ")))))
 
@@ -792,8 +815,8 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
       (dotimes (k yahtzee-number-of-dice-to-throw)
 	(let ((point (point)))
 	  (insert "|       ")
-	  (put-text-property (+ point 1) (+ point 8) 'font-lock-face (yahtzee-dice-get-face k))
-	  ))
+	  (put-text-property (+ point 1) (+ point 8)
+			     'font-lock-face (yahtzee-dice-get-face k))))
       (insert "|")
 
       ;; insert the number
@@ -805,8 +828,8 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
 	  (insert (format "|   %1d   " (if (elt yahtzee-dice-outcomes k)
 					   (elt yahtzee-dice-outcomes k)
 					 0)))
-	  (put-text-property (+ point 1) (+ point 8) 'font-lock-face (yahtzee-dice-get-face k))
-	  ))
+	  (put-text-property (+ point 1) (+ point 8)
+			     'font-lock-face (yahtzee-dice-get-face k))))
       (insert "|")
 
       ;; insert empty line below the number
@@ -816,8 +839,8 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
       (dotimes (k yahtzee-number-of-dice-to-throw)
 	(let ((point (point)))
 	  (insert "|       ")
-	  (put-text-property (+ point 1) (+ point 8) 'font-lock-face (yahtzee-dice-get-face k))
-	  ))
+	  (put-text-property (+ point 1) (+ point 8) 'font-lock-face
+			     (yahtzee-dice-get-face k))))
       (insert "|")
 
       ;; insert the bottom line
@@ -845,19 +868,22 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
       (let ((point (point)))
 	(insert "   |       |")
 	(when (= yahtzee-dice-thrown-number yahtzee-dice-max-attempt)
-       	  (put-text-property (+ point 4) (+ point 11) 'font-lock-face 'yahtzee-face-fixed)))
+       	  (put-text-property (+ point 4) (+ point 11)
+			     'font-lock-face 'yahtzee-face-fixed)))
       (forward-line)
       (end-of-line)
       (let ((point (point)))
 	(insert (format "   |   %d   |" yahtzee-dice-thrown-number))
 	(when (= yahtzee-dice-thrown-number yahtzee-dice-max-attempt)
-       	  (put-text-property (+ point 4) (+ point 11) 'font-lock-face 'yahtzee-face-fixed)))
+       	  (put-text-property (+ point 4) (+ point 11)
+			     'font-lock-face 'yahtzee-face-fixed)))
       (forward-line)
       (end-of-line)
       (let ((point (point)))
 	(insert "   |       |")
 	(when (= yahtzee-dice-thrown-number yahtzee-dice-max-attempt)
-       	  (put-text-property (+ point 4) (+ point 11) 'font-lock-face 'yahtzee-face-fixed)))
+       	  (put-text-property (+ point 4) (+ point 11)
+			     'font-lock-face 'yahtzee-face-fixed)))
       (forward-line)
       (end-of-line)
       (insert "   +-------+")
@@ -899,7 +925,8 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
       (when (and (not only-scores)
 		 (= player yahtzee-active-player))
 	(insert "  «")
-	(put-text-property (- (point) 1) (point) 'font-lock-face 'yahtzee-face-user-arrow))
+	(put-text-property (- (point) 1) (point)
+			   'font-lock-face 'yahtzee-face-user-arrow))
       (forward-line 2)
       (end-of-line)
       (insert fields-dice-separation))
@@ -941,8 +968,10 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
 	    (if (not winner)
 		(setq separation-string "")
 	      (setq separation-string "/"))
-	    (setq winner (append winner `(,(concat separation-string
-						   (nth player yahtzee-players-names)))))))
+	    (setq winner
+		  (append winner `(,(concat separation-string
+					    (nth player
+						 yahtzee-players-names)))))))
 
 	(let ((point (point)))
 	  (insert (format "WINNER(S): %s" (apply 'concat winner)))
@@ -950,7 +979,8 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
 
       ;; game duration
       (when (not yahtzee-loaded-game)
-	(let ((elapsed (float-time (time-subtract (current-time) yahtzee-game-start-time))))
+	(let ((elapsed (float-time (time-subtract (current-time)
+						  yahtzee-game-start-time))))
 	  (forward-line 2)
 	  (end-of-line)
 	  (insert fields-dice-separation)
@@ -976,20 +1006,21 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
 	    (call-interactively 'yahtzee-save-game-score)
 	  ;; current-number: the number of already saved files
 	  ;; filename      : the newly generated name
-	  (let* ((current-number (string-to-number
-				  (substring ;; "remove \n"
-				   (shell-command-to-string
-				    ;; count number of files
-				    (concat "find "
-					    (file-name-directory yahtzee-output-file-base)
-					    " -name \""
-					    (file-name-nondirectory yahtzee-output-file-base)
-					    "\" | wc -l"))
-				   0 -1)))
-		 (filename (replace-regexp-in-string "\*"
-						     (format "%04d" (1+ current-number))
-						     "/Users/drdv/git/github/yahtzee/scores/game-*.json")))
-
+	  (let* ((current-number
+		  (string-to-number
+		   (substring ;; "remove \n"
+		    (shell-command-to-string
+		     ;; count number of files
+		     (concat "find "
+			     (file-name-directory yahtzee-output-file-base)
+			     " -name \""
+			     (file-name-nondirectory yahtzee-output-file-base)
+			     "\" | wc -l"))
+		    0 -1)))
+		 (filename
+		  (replace-regexp-in-string "\*"
+					    (format "%04d" (1+ current-number))
+					    yahtzee-output-file-base)))
 	    (yahtzee-save-game-score filename)))))))
 
 
