@@ -4,7 +4,7 @@
 
 ;; Author: Dimitar Dimitrov <mail.mitko@gmail.com>
 ;; URL: https://github.com/drdv/yahtzee
-;; Package-Version: 20170505.1
+;; Package-Version: 20170529.1
 ;; Package-Requires: ()
 ;; Keywords: games
 
@@ -74,6 +74,12 @@ One could simply change it before \"(require 'yahtzee)\".")
 (defvar yahtzee-dice-max-attempt 3
   "Number of allowed dice throws per turn.")
 
+(defvar yahtzee-output-file-base nil
+  "Wild card pattern used to generate files for saving games automatically.
+If set to nil, game is saved interactively (i.e., user specifies filename).
+For example \"/path/to/scores/game-*.json\" would generate a file
+\"/path/to/scores/game-0004.json\" if there are already three saved files.")
+
 (defvar yahtzee-fields-alist nil
   "Association list with yahtzee fields.
 The format should be ((field-name . field-function)...).
@@ -81,14 +87,9 @@ The field-names are e.g., \"1\", \"2\", \"full\", \"care\", \"straight\" etc.
 The field-function is called without arguments and should return score given
 `yahtzee-dice-outcomes'.")
 
-(defvar yahtzee-buffer-name "*yahtzee*"
-  "Name of buffer where to display the yahtzee game.")
-
-(defvar yahtzee-output-file-base nil
-  "Wild card pattern used to generate files for saving games automatically.
-If set to nil, game is saved interactively (i.e., user specifies filename).
-For example \"/path/to/scores/game-*.json\" would generate a file
-\"/path/to/scores/game-0004.json\" if there are already three saved files.")
+;; =============================================================================
+;; the variables below are not meant to be set by the user
+;; =============================================================================
 
 (defvar-local yahtzee-active-player nil
   "Currently active player (integer from 0 to `yahtzee-number-of-players'-1).")
@@ -137,6 +138,9 @@ The format should be [((field-name . score)...)...], i.e.,
 (defvar-local yahtzee-player-time nil
   "Vector [(player-move-start-time . player-game-time), ...].")
 
+(defconst yahtzee-buffer-name "*yahtzee*"
+  "Name of buffer where to display the yahtzee game.")
+
 
 
 (defgroup yahtzee nil
@@ -147,7 +151,6 @@ The format should be [((field-name . score)...)...], i.e.,
   "The yahtzee game related phases."
   :group 'yahtzee
   :group 'faces)
-
 
 (defface yahtzee-face '((t . (:background "khaki"
 					  :foreground "black")))
