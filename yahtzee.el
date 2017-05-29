@@ -16,7 +16,7 @@
 
 ;;; Commentary:
 
-;; Pakage tested on:
+;; Package tested on:
 ;; GNU Emacs 25.2.1 (x86_64-apple-darwin16.5.0)
 
 ;; A simple implementation of the yahtzee game.
@@ -62,7 +62,7 @@
   "List with names of players.")
 
 (defvar-local yahtzee-players-labels '("A" "B" "C" "D" "E" "F" "G")
-  "Short lables associated with names of players.
+  "Short labels associated with names of players.
 assume: `yahtzee-number-of-players' <= 7.")
 
 (defvar-local yahtzee-active-player nil
@@ -70,12 +70,12 @@ assume: `yahtzee-number-of-players' <= 7.")
 
 (defvar-local yahtzee-moves-left nil
   "Number of moves left in the game.
-Initially set to the numbe of fields in `yahtzee-fields-alist'.")
+Initially set to the number of fields in `yahtzee-fields-alist'.")
 
 (defvar-local yahtzee-number-of-dice-to-throw 5
   "Number of dice to throw.
 This variable is used in the definition of `yahtzee-mode-map' so changing it
-after \"(require 'yahtzee)\" in ~/.emacs leades to \"dead\" key bindings.
+after \"(require 'yahtzee)\" in ~/.emacs leads to \"dead\" key bindings.
 One could simply change it before \"(require 'yahtzee)\".")
 
 (defvar-local yahtzee-dice-max-attempt 3
@@ -209,7 +209,7 @@ PLAYER-NAME is set in the mini-buffer by the user."
 				yahtzee-fields-alist
 				:test 'equal)))
 	;; below I rely on the fact that e.g., (nth 5 '(1 2 3)) returns nil
-	;; when `yahtzee-selected-field' is nil, no score is slected
+	;; when `yahtzee-selected-field' is nil, no score is selected
 	(setq yahtzee-selected-field (car (nth (1+ index) yahtzee-fields-alist)))))
 
     ;; make sure that we don't land on a field with already fixed score
@@ -337,7 +337,7 @@ This score would be modified untill fixed."
 	(delq dice-number yahtzee-dice-outcomes-fixed)))
 
 (defun yahtzee-dice-check-if-fixed (dice-number)
-  "Check whether a dice number DICE-NUMBER has ben fixed."
+  "Check whether a dice number DICE-NUMBER has been fixed."
   (member dice-number yahtzee-dice-outcomes-fixed))
 
 (defun yahtzee-dice-get-face (dice-number)
@@ -567,7 +567,7 @@ automatically recorded in `yahtzee-scores'."
 (defun yahtzee-set-score (field-name player &optional score)
   "Set the score for FIELD-NAME for PLAYER.
 This records the score in `yahtzee-scores'.
-The optional argument SCORE can be used to dissregard the outcomes in
+The optional argument SCORE can be used to disregard the outcomes in
 `yahtzee-dice-outcomes' (e.g., it is used in `yahtzee-load-game-score')."
   (setcdr (assoc field-name
 		 (elt yahtzee-scores player))
@@ -759,7 +759,7 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
 
     (dolist (field yahtzee-fields-alist)
       (let ((field-name (car field)))
-	;; openning line
+	;; opening line
     	(dotimes (player yahtzee-number-of-players)
     	  (insert "+-------"))
     	(insert "+----------------+\n")
@@ -1033,7 +1033,7 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
 
     (setq yahtzee-fields-alist nil)
     (dolist (name-score-pair (elt scores 0))
-      ;; here I don't need the functions for computting scores
+      ;; here I don't need the functions for computing scores
       ;; (and anyway, it is not stored in the json file)
       (push `(,(symbol-name (car name-score-pair)) . nil) yahtzee-fields-alist))
 
