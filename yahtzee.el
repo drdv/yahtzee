@@ -5,7 +5,7 @@
 ;; Author: Dimitar Dimitrov <mail.mitko@gmail.com>
 ;; URL: https://github.com/drdv/yahtzee
 ;; Package-Version: 20170529.1
-;; Package-Requires: ()
+;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: games
 
 ;; This file is not part of GNU Emacs.
