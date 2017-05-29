@@ -790,8 +790,7 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
 
     	(dotimes (player yahtzee-number-of-players)
 	  (yahtzee-display-score-player field-name player))
-    	(insert (format "|  %12s  |\n" field-name))
-    	))
+    	(insert (format "|  %12s  |\n" field-name))))
     ;; closing line
     (dotimes (player yahtzee-number-of-players)
       (insert "+-------"))
@@ -998,8 +997,7 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
 	    (insert (concat fields-dice-separation "  - "))
 	    (insert (format "%-8s: %f sec."
 			    (nth player yahtzee-players-names)
-			    (/ player-time (length yahtzee-fields-alist))))
-	    )))
+			    (/ player-time (length yahtzee-fields-alist)))))))
 
       (when (and (not yahtzee-loaded-game)
 		 (y-or-n-p "Press y to save the game.  Save the game? "))
@@ -1040,8 +1038,7 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
 
     (write-region (json-encode `(("players"     . ,yahtzee-players-names)
 				 ("total-score" . ,(reverse name-score-pair))
-				 ("scores"      . ,yahtzee-scores)
-				 ))
+				 ("scores"      . ,yahtzee-scores)))
 		  nil filename)))
 
 (defun yahtzee-load-game-score (filename)
