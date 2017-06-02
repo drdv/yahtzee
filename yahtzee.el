@@ -721,11 +721,21 @@ A bonus is awarded when the player scores at least
 	  ;; first move we don't ask for verification
 	  (= yahtzee-moves-left (length yahtzee-fields-alist)))
       ;;THEN
-      (yahtzee)
+      (progn
+	(yahtzee-rotate-players)
+	(yahtzee))
     ;; ELSE
     ;; ask for confirmation only if the game has not been finished
     (when (y-or-n-p "Press y to start a new game.  Start a new game? ")
+      (yahtzee-rotate-players)
       (yahtzee))))
+
+(defun yahtzee-rotate-players ()
+  "Rotate names of players.
+The last player in a given game plays first in the next game."
+  (let ((last-player (car (last yahtzee-players-names))))
+    (delete last-player yahtzee-players-names)
+    (push last-player yahtzee-players-names)))
 
 
 
