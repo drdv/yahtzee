@@ -177,10 +177,14 @@ The format should be [((field-name . score)...)...], i.e.,
 (defun yahtzee-reset-players ()
   "Reset back to the default player."
   (interactive)
-  (setq yahtzee-number-of-players 1)
-  (setq yahtzee-players-names '("unknown"))
-  (yahtzee-reset)
-  (yahtzee-display-board))
+  ;; protect against unintended modification of players
+  (if (< yahtzee-moves-left (length yahtzee-fields-alist))
+      (message "Each player has already made a move! \
+To reset players, start a new game.")
+    (setq yahtzee-number-of-players 1)
+    (setq yahtzee-players-names '("unknown"))
+    (yahtzee-reset)
+    (yahtzee-display-board)))
 
 (defun yahtzee-set-player-name (player-name)
   "Add a new player and set its name.
@@ -188,7 +192,7 @@ PLAYER-NAME is set in the mini-buffer by the user."
   (interactive
    (list
     (read-string "Player name: ")))
-  ;; protect against unintended game restart
+  ;; protect against unintended modification of players
   (if (< yahtzee-moves-left (length yahtzee-fields-alist))
       (message "Each player has already made a move! \
 To rename players, start a new game.")
