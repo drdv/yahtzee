@@ -216,7 +216,7 @@ To rename players, start a new game.")
 (defun yahtzee-select-next-field ()
   "Select the next field without a fixed score."
   (interactive)
-  (when (not (= yahtzee-dice-thrown-number 0))
+  (unless (= yahtzee-dice-thrown-number 0)
     (if (not yahtzee-selected-field)
 	(setq yahtzee-selected-field (caar yahtzee-fields-alist))
       ;; get index in yahtzee-fields-alist of a cons cell with key
@@ -242,7 +242,7 @@ To rename players, start a new game.")
   "Select the previous field without a fixed score.
 Note: see the comments in `yahtzee-select-next-field'."
   (interactive)
-  (when (not (= yahtzee-dice-thrown-number 0))
+  (unless (= yahtzee-dice-thrown-number 0)
     (if (not yahtzee-selected-field)
 	(setq yahtzee-selected-field (caar (last yahtzee-fields-alist)))
       (let ((index (cl-position
@@ -308,7 +308,7 @@ Display a warning if the selected field already has been assigned a score."
       (setcar (elt yahtzee-player-time yahtzee-active-player) (current-time)))
 
     (dotimes (k yahtzee-number-of-dice-to-throw)
-      (when (not (member k yahtzee-dice-outcomes-fixed))
+      (unless (member k yahtzee-dice-outcomes-fixed)
 	(aset yahtzee-dice-outcomes
 	      k
 	      (elt yahtzee-dice-possible-outcomes
@@ -690,8 +690,7 @@ A bonus is awarded when the player scores at least
   ;; ====================================================================
   ;; when yahtzee-number-of-players != (length yahtzee-players-names)
   ;; set yahtzee-number-of-players = (length yahtzee-players-names)
-  (when (not (= (length yahtzee-players-names)
-		yahtzee-number-of-players))
+  (unless (= (length yahtzee-players-names) yahtzee-number-of-players)
     (setq yahtzee-number-of-players (length yahtzee-players-names)))
   ;; ====================================================================
 
@@ -779,7 +778,7 @@ The last player in a given game plays first in the next game."
 (defun yahtzee-display-board (&optional only-scores)
   "Display the yahtzee board.
 When ONLY-SCORES is non-nil display only scores (no dice)."
-  (when (not (equal (buffer-name) yahtzee-buffer-name))
+  (unless (equal (buffer-name) yahtzee-buffer-name)
     (error (format "We are not in buffer %s" yahtzee-buffer-name)))
   (let ((inhibit-read-only t)
 	(fields-dice-separation "     "))
@@ -817,7 +816,7 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
     ;; second, depict the dice
     ;; ================================================================
 
-    (when (not only-scores)
+    (unless only-scores
       (goto-char (point-min))
       (end-of-line)
       (insert fields-dice-separation)
@@ -912,7 +911,7 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
     ;; third, depict the number of moves left and the names of players
     ;; ================================================================
 
-    (when (not only-scores)
+    (unless only-scores
       (forward-line 3)
       (end-of-line)
       (insert fields-dice-separation)
@@ -995,7 +994,7 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
 	  (put-text-property point (+ point 10) 'font-lock-face 'yahtzee-face)))
 
       ;; game duration
-      (when (not yahtzee-loaded-game)
+      (unless yahtzee-loaded-game
 	(let ((elapsed (float-time (time-subtract (current-time)
 						  yahtzee-game-start-time))))
 	  (forward-line 2)
