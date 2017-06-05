@@ -38,10 +38,12 @@
 ;;
 ;; Configuration variables:
 ;;
-;; The user might want to set the following variables (see docstrings)
+;; The user might want to set the following variables
+;; (see associated docstrings)
 ;;   - `yahtzee-output-file-base'
-;;   - `yahtzee-players-names'     (number of players and their names)
-;;   - `yahtzee-fields-alist'      (for adding extra fields)
+;;   - `yahtzee-fields-alist'      for adding extra fields
+;;   - `yahtzee-players-names'     set names of players
+;;                                 use (setq-default yahtzee-players-names ...)
 ;;
 ;; Note: personally I don't enjoy playing with "Yahtzee bonuses" and "Joker
 ;;       rules" so they are not implemented (even thought they are simple to
@@ -54,7 +56,7 @@
 
 (require 'json)
 
-(defvar yahtzee-players-names '("unknown")
+(defvar-local yahtzee-players-names '("unknown")
   "List with names of players.")
 
 (defvar yahtzee-number-of-dice-to-throw 5
@@ -83,7 +85,7 @@ The field-function is called without arguments and should return score given
 ;; the variables below are not meant to be set by the user
 ;; =============================================================================
 
-(defvar yahtzee-number-of-players 1
+(defvar-local yahtzee-number-of-players 1
   "Number of players (greater or equal to 1).
 The user is not meant to set this directly (but through setting
 `yahtzee-players-names').")
@@ -92,55 +94,56 @@ The user is not meant to set this directly (but through setting
 					     "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
   "Short labels associated with names of players.")
 
-(defvar yahtzee-active-player nil
+(defvar-local yahtzee-active-player nil
   "Currently active player (integer from 0 to `yahtzee-number-of-players'-1).")
 
-(defvar yahtzee-moves-left nil
+(defvar-local yahtzee-moves-left nil
   "Number of moves left in the game.
 Initially set to the number of fields in `yahtzee-fields-alist'.")
 
-(defvar yahtzee-dice-thrown-number nil
+(defvar-local yahtzee-dice-thrown-number nil
   "Number of throws performed.")
 
 (defconst yahtzee-dice-possible-outcomes (number-sequence 1 6)
   "Possible outcomes of each dice roll.")
 
-(defvar yahtzee-dice-outcomes
+(defvar-local yahtzee-dice-outcomes
   (make-vector yahtzee-number-of-dice-to-throw nil)
   "Vector of outcomes of dice throws.")
 
-(defvar yahtzee-dice-outcomes-counts
+(defvar-local yahtzee-dice-outcomes-counts
   (make-vector (length yahtzee-dice-possible-outcomes) 0)
   "Number of occurrences of a dice throw outcome.
 Number of occurrences of `yahtzee-dice-possible-outcomes'[k] is stored
 in `yahtzee-dice-outcomes-counts'[k].")
 
-(defvar yahtzee-dice-outcomes-fixed nil
+(defvar-local yahtzee-dice-outcomes-fixed nil
   "A list of indexes of elements of `yahtzee-dice-outcomes' with fixed outcomes.
 That is, outcomes that cannot change during a throw.")
 
-(defvar yahtzee-selected-field nil
+(defvar-local yahtzee-selected-field nil
   "Name of field whose score is currently selected by the active player.")
 
-(defvar yahtzee-scores (make-vector yahtzee-number-of-players nil)
+(defvar-local yahtzee-scores (make-vector yahtzee-number-of-players nil)
   "Vector of alists of user scores.
 The format should be [((field-name . score)...)...], i.e.,
 `yahtzee-scores'[k] is the alist associated with the k-th user.")
 
-(defvar yahtzee-loaded-game nil
+(defvar-local yahtzee-loaded-game nil
   "Non-nil value indicates that the game was loaded.")
 
-(defvar yahtzee-game-over nil
+(defvar-local yahtzee-game-over nil
   "Non-nil indicates that the game has ended.")
 
-(defvar yahtzee-game-start-time nil
+(defvar-local yahtzee-game-start-time nil
   "Records the time when the game started.")
 
-(defvar yahtzee-player-time nil
+(defvar-local yahtzee-player-time nil
   "Vector [(player-move-start-time . player-game-time), ...].")
 
-(defconst yahtzee-buffer-name "*yahtzee*"
-  "Name of buffer where to display the yahtzee game.")
+(defconst yahtzee-buffer-name-start "*yahtzee*"
+  "Initial part of buffer name where to display the yahtzee game.
+`generate-new-buffer-name' is used to generate unique buffer names.")
 
 
 
@@ -713,8 +716,8 @@ A bonus is awarded when the player scores at least
 (defun yahtzee ()
   "Start a new game."
   (interactive)
-  (switch-to-buffer yahtzee-buffer-name)
-  (buffer-disable-undo yahtzee-buffer-name)
+  (switch-to-buffer (generate-new-buffer-name yahtzee-buffer-name-start))
+  (buffer-disable-undo)
   (yahtzee-mode)
   (yahtzee-reset)
   (yahtzee-display-board))
@@ -778,8 +781,8 @@ The last player in a given game plays first in the next game."
 (defun yahtzee-display-board (&optional only-scores)
   "Display the yahtzee board.
 When ONLY-SCORES is non-nil display only scores (no dice)."
-  (unless (equal (buffer-name) yahtzee-buffer-name)
-    (error (format "We are not in buffer %s" yahtzee-buffer-name)))
+  (unless (string-prefix-p yahtzee-buffer-name-start (buffer-name))
+    (error (format "We are not in a %s buffer." yahtzee-buffer-name-start)))
   (let ((inhibit-read-only t)
 	(fields-dice-separation "     "))
     (erase-buffer)
@@ -1095,8 +1098,9 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
 	    (yahtzee-set-score field-name player field-score)))))
 
     ;; display game results
-    (switch-to-buffer yahtzee-buffer-name)
-    (buffer-disable-undo yahtzee-buffer-name)
+    (switch-to-buffer (generate-new-buffer-name
+		       (concat yahtzee-buffer-name-start "-load")))
+    (buffer-disable-undo)
     (yahtzee-mode)
     (yahtzee-display-board t)))
 
