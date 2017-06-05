@@ -1,0 +1,48 @@
+{
+  "players": [
+    "Elena",
+    "Marina"
+  ],
+  "total-score": {
+    "Elena": 327,
+    "Marina": 195
+  },
+  "scores": [
+    {
+      "chance": 26,
+      "minus": 16,
+      "plus": 23,
+      "rigole": 0,
+      "yams": 0,
+      "carre": 40,
+      "grande-suite": 35,
+      "petite-suite": 25,
+      "brelan": 24,
+      "full": 30,
+      "6": 24,
+      "5": 20,
+      "4": 16,
+      "3": 12,
+      "2": 2,
+      "1": 4
+    },
+    {
+      "chance": 20,
+      "minus": 20,
+      "plus": 26,
+      "rigole": 0,
+      "yams": 0,
+      "carre": 0,
+      "grande-suite": 35,
+      "petite-suite": 25,
+      "brelan": 9,
+      "full": 0,
+      "6": 18,
+      "5": 15,
+      "4": 12,
+      "3": 12,
+      "2": 2,
+      "1": 1
+    }
+  ]
+}
