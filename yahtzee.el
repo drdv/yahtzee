@@ -327,10 +327,6 @@ Display a warning if the selected field already has been assigned a score."
     (yahtzee-select-next-field)
     (yahtzee-assign-score-to-field)))
 
-(defun yahtzee-do-nothing ()
-  "A function that does nothing."
-  (interactive))
-
 
 
 (defun yahtzee-goto-next-player ()
