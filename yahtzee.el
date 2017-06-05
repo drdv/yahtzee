@@ -25,14 +25,14 @@
 ;;
 ;; add (require 'yahtzee) in your .emacs
 ;; M-x yahtzee  start a game
-;; C-p          add players
-;; C-M-p        reset players
+;; C-c n        start a new game
+;; C-c p        add players
+;; C-c P        reset players
 ;; SPC          throw dice
 ;; {1,2,3,4,5}  hold outcome of {1,2,3,4,5}-th dice
 ;; UP/DOWN      select score to register
 ;; ENTER        register selected score
 ;; w            save the game (in json format)
-;; C-n          start a new game
 ;;
 ;; The score of a saved game can be loaded using `M-x yahtzee-load-game-score`.
 ;;
@@ -153,22 +153,27 @@ The format should be [((field-name . score)...)...], i.e.,
   :group 'yahtzee
   :group 'faces)
 
-(defface yahtzee-face '((t . (:background "khaki"
-					  :foreground "black")))
+(defface yahtzee-face '((t . (:inherit highlight
+				       :background "khaki"
+				       :foreground "black")))
   "Generic face."
   :group 'yahtzee-faces)
 
-(defface yahtzee-face-fixed '((t . (:background "burlywood"
-						:foreground "black")))
+(defface yahtzee-face-fixed '((t . (:inherit highlight
+					     :background "burlywood"
+					     :foreground "black")))
   "Face for fixed stuff."
   :group 'yahtzee-faces)
 
-(defface yahtzee-face-selected '((t . (:background "gold"
-						   :foreground "black")))
+(defface yahtzee-face-selected '((t . (:inherit highlight
+						:background "gold"
+						:foreground "black")))
   "Face for selected stuff."
   :group 'yahtzee-faces)
 
-(defface yahtzee-face-user-arrow '((t . (:foreground "red")))
+(defface yahtzee-face-user-arrow '((t . (:inherit highlight
+						  :background "unspecified"
+						  :foreground "red")))
   "Face for the arrow indicating which user is active."
   :group 'yahtzee-faces)
 
@@ -641,19 +646,20 @@ A bonus is awarded when the player scores at least
     (define-key map (kbd     "<SPC>") 'yahtzee-dice-throw)
     (define-key map (kbd    "<down>") 'yahtzee-select-next-field)
     (define-key map (kbd      "<up>") 'yahtzee-select-previous-field)
-    (define-key map (kbd       "C-m") 'yahtzee-assign-score-to-field) ;; ENTER
+    (define-key map (kbd       "RET") 'yahtzee-assign-score-to-field)
     (define-key map (kbd         ",") 'beginning-of-buffer)
     (define-key map (kbd         ".") 'end-of-buffer)
-    (define-key map (kbd       "C-p") 'yahtzee-set-player-name)
-    (define-key map (kbd     "C-M-p") 'yahtzee-reset-players)
-    (define-key map (kbd       "C-n") 'yahtzee-new-game)
+    (define-key map (kbd     "C-c p") 'yahtzee-set-player-name)
+    (define-key map (kbd     "C-c P") 'yahtzee-reset-players)
+    (define-key map (kbd     "C-c n") 'yahtzee-new-game)
     (define-key map (kbd         "w") 'yahtzee-save-game-score)
     ;; disable keys (for some reason setting to nil doesn't work)
-    (define-key map (kbd  "<left>") 'yahtzee-do-nothing)
-    (define-key map (kbd "<right>") 'yahtzee-do-nothing)
+    (define-key map (kbd  "<left>") 'ignore)
+    (define-key map (kbd "<right>") 'ignore)
+    (define-key map (kbd       "0") 'ignore)
     ;; disable the remaining keys to 9
     (dolist (k (number-sequence yahtzee-number-of-dice-to-throw 8))
-      (define-key map (kbd  (number-to-string (1+ k))) 'yahtzee-do-nothing))
+      (define-key map (kbd  (number-to-string (1+ k))) 'ignore))
     map)
   "Keymap for yahtzee major mode.")
 

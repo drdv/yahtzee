@@ -14,14 +14,14 @@ to your `~/.emacs` or `~/.emacs.d/init.el`.
 # How to play
 
 - `M-x yahtzee` start a game
-- `C-p`         add players
-- `C-M-p`       reset players
+- `C-c n`       start a new game
+- `C-c p`       add players
+- `C-c P`       reset players
 - `SPC`         throw dice
 - `{1,2,3,4,5}` hold outcome of `{1,2,3,4,5}`-th dice
 - `UP/DOWN`     select score to register
 - `ENTER`       register selected score
 - `w`           save the game (in json format)
-- `C-n`         start a new game
 
 The score of a saved game can be loaded using `M-x yahtzee-load-game-score`.
 
