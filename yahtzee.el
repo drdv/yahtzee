@@ -1070,6 +1070,11 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
 	 ;; all players have the same fields
 	 (numb-fields  (length (elt scores 0))))
 
+    (switch-to-buffer (generate-new-buffer-name
+		       (concat yahtzee-buffer-name-start "-load")))
+    (buffer-disable-undo)
+    (yahtzee-mode)
+
     ;; -------------------------------------------------------------------
     ;; initialize global variables
     ;; -------------------------------------------------------------------
@@ -1098,10 +1103,6 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
 	    (yahtzee-set-score field-name player field-score)))))
 
     ;; display game results
-    (switch-to-buffer (generate-new-buffer-name
-		       (concat yahtzee-buffer-name-start "-load")))
-    (buffer-disable-undo)
-    (yahtzee-mode)
     (yahtzee-display-board t)))
 
 
