@@ -174,8 +174,7 @@ The format should be [((field-name . score)...)...], i.e.,
   "Face for selected stuff."
   :group 'yahtzee-faces)
 
-(defface yahtzee-face-user-arrow '((t . (:inherit highlight
-						  :background "unspecified"
+(defface yahtzee-face-user-arrow '((t . (:inherit default
 						  :foreground "red")))
   "Face for the arrow indicating which user is active."
   :group 'yahtzee-faces)
