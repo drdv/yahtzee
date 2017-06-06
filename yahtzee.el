@@ -24,8 +24,8 @@
 ;; Quick start:
 ;;
 ;; add (require 'yahtzee) in your .emacs
-;; M-x yahtzee  start a game
-;; C-c n        start a new game
+;; M-x yahtzee  start a game (in a new buffer)
+;; C-c n        start a new game (in the same buffer)
 ;; C-c p        add players
 ;; C-c P        reset players
 ;; SPC          throw dice
