@@ -744,9 +744,10 @@ A bonus is awarded when the player scores at least
 (defun yahtzee-rotate-players ()
   "Rotate names of players.
 The last player in a given game plays first in the next game."
-  (let ((last-player (car (last yahtzee-players-names))))
-    (delete last-player yahtzee-players-names)
-    (push last-player yahtzee-players-names)))
+  (when (> (length yahtzee-players-names) 1)
+    (let ((last-player (car (last yahtzee-players-names))))
+      (delete last-player yahtzee-players-names)
+      (push last-player yahtzee-players-names))))
 
 
 
