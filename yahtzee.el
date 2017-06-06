@@ -732,12 +732,14 @@ A bonus is awarded when the player scores at least
       ;;THEN
       (progn
 	(yahtzee-rotate-players)
-	(yahtzee))
+	(yahtzee-reset)
+	(yahtzee-display-board))
     ;; ELSE
     ;; ask for confirmation only if the game has not been finished
     (when (y-or-n-p "Press y to start a new game.  Start a new game? ")
       (yahtzee-rotate-players)
-      (yahtzee))))
+      (yahtzee-reset)
+      (yahtzee-display-board))))
 
 (defun yahtzee-rotate-players ()
   "Rotate names of players.
