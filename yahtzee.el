@@ -45,12 +45,13 @@
 ;;   - `yahtzee-players-names'     set names of players
 ;;                                 use (setq-default yahtzee-players-names ...)
 ;;
-;; Note: personally I don't enjoy playing with "Yahtzee bonuses" and "Joker
-;;       rules" so they are not implemented (even thought they are simple to
-;;       include).  Only the "63 bonus" is available (see
-;;       `yahtzee-compute-bonus').  Furthermore, some scores differ from the
-;;       official ones.  Changing all this can be done by simply modifying the
-;;       corresponding functions in the definition of `yahtzee-fields-alist'.
+;; Note:
+;;    personally I don't enjoy playing with "Yahtzee bonuses" and "Joker rules"
+;;    so they are not implemented (even thought they are simple to include).
+;;    Only the "63 bonus" is available (see `yahtzee-compute-bonus').
+;;    Furthermore, some scores differ from the official ones.  Changing all
+;;    this can be done by simply modifying the corresponding functions in the
+;;    definition of `yahtzee-fields-alist'.
 
 ;;; Code:
 
@@ -90,8 +91,7 @@ The field-function is called without arguments and should return score given
 The user is not meant to set this directly (but through setting
 `yahtzee-players-names').")
 
-(defvar yahtzee-players-labels (mapcar 'string
-					     "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+(defvar yahtzee-players-labels (mapcar 'string "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
   "Short labels associated with names of players.")
 
 (defvar-local yahtzee-active-player nil
@@ -790,7 +790,7 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
     (erase-buffer)
 
     ;; ================================================================
-    ;; first, depict the yahtzee fields
+    ;; yahtzee fields
     ;; ================================================================
 
     ;; labels of players
@@ -818,7 +818,7 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
     (insert "+----------------+\n")
 
     ;; ================================================================
-    ;; second, depict the dice
+    ;; dice
     ;; ================================================================
 
     (unless only-scores
@@ -913,7 +913,8 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
       (insert "     #throws"))
 
     ;; ================================================================
-    ;; third, depict the number of moves left and the names of players
+    ;; - number of moves left
+    ;; - names of players
     ;; ================================================================
 
     (unless only-scores
@@ -953,8 +954,8 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
       (insert fields-dice-separation))
 
     ;; ================================================================
-    ;; fourth, announce the winner when the game is over
-    ;; include game duration
+    ;; - announce the winner when the game is over
+    ;; - include game duration
     ;; ================================================================
 
     (when (and (= yahtzee-moves-left 0)
@@ -1072,13 +1073,14 @@ When ONLY-SCORES is non-nil display only scores (no dice)."
 	 ;; all players have the same fields
 	 (numb-fields  (length (elt scores 0))))
 
+    ;; switch to new buffer before initializing local variables
     (switch-to-buffer (generate-new-buffer-name
 		       (concat yahtzee-buffer-name-start "-load")))
     (buffer-disable-undo)
     (yahtzee-mode)
 
     ;; -------------------------------------------------------------------
-    ;; initialize global variables
+    ;; initialize variables
     ;; -------------------------------------------------------------------
     (setq yahtzee-loaded-game t)
 
