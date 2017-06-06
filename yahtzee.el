@@ -652,10 +652,10 @@ A bonus is awarded when the player scores at least
     (define-key map (kbd     "C-c P") 'yahtzee-reset-players)
     (define-key map (kbd     "C-c n") 'yahtzee-new-game)
     (define-key map (kbd         "w") 'yahtzee-save-game-score)
-    ;; disable keys (for some reason setting to nil doesn't work)
-    (define-key map (kbd  "<left>") 'ignore)
-    (define-key map (kbd "<right>") 'ignore)
-    (define-key map (kbd       "0") 'ignore)
+    ;; ignore some keybindings
+    (define-key map (kbd    "<left>") 'ignore)
+    (define-key map (kbd   "<right>") 'ignore)
+    (define-key map (kbd         "0") 'ignore)
     ;; disable the remaining keys to 9
     (dolist (k (number-sequence yahtzee-number-of-dice-to-throw 8))
       (define-key map (kbd  (number-to-string (1+ k))) 'ignore))
