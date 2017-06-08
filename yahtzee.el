@@ -706,6 +706,7 @@ A bonus is awarded when the player scores at least
   (setq yahtzee-moves-left (length yahtzee-fields-alist))
   (setq yahtzee-game-start-time (current-time))
   (setq yahtzee-dice-outcomes-fixed nil)
+  (setq yahtzee-selected-field nil)
 
   (setq yahtzee-dice-outcomes
 	(make-vector yahtzee-number-of-dice-to-throw nil))
