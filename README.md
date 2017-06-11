@@ -1,3 +1,5 @@
+[![MELPA](http://melpa.org/packages/yahtzee-badge.svg)](http://melpa.org/#/yahtzee)
+
 # Yahtzee
 
 The [Yahtzee](https://en.wikipedia.org/wiki/Yahtzee) game.
@@ -7,6 +9,13 @@ The [Yahtzee](https://en.wikipedia.org/wiki/Yahtzee) game.
 The image is from a game with three players.
 
 # Installation
+
+#### Via MELPA (recommended)
+
+If you have a recent version of `package.el` you can install `yahtzee` from
+the [MELPA](http://melpa.org) package repository.
+
+#### Manually
 
 Ensure that `yahtzee.el` is in a directory on your load-path, and add `(require 'yahtzee)`
 to your `~/.emacs` or `~/.emacs.d/init.el`.
