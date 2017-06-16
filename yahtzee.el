@@ -203,17 +203,23 @@ PLAYER-NAME is set in the mini-buffer by the user."
   (if (< yahtzee-moves-left (length yahtzee-fields-alist))
       (message "Each player has already made a move! \
 To rename players, start a new game.")
-    ;; check is player-name already exists in yahtzee-players-names
-    (if (member player-name yahtzee-players-names)
-	(message "Player %s already exists!" player-name)
-      ;; when there is only an "unknown" player replace it
+    ;; check whether:
+    ;; player-name already exists in yahtzee-players-names
+    ;; or player-name is an empty string
+    (cond
+     ((member player-name yahtzee-players-names)
+      (message "Player %s already exists!" player-name))
+     ((= (length player-name) 0)
+      (message "Player name cannot be an empty string!"))
+     ;; when there is only an "unknown" player replace it
+     (t
       (when (equal yahtzee-players-names '("unknown"))
 	(setq yahtzee-players-names nil))
       (setq yahtzee-players-names (append yahtzee-players-names
 					  `(,player-name)))
       (setq yahtzee-number-of-players (length yahtzee-players-names))
       (yahtzee-reset)
-      (yahtzee-display-board))))
+      (yahtzee-display-board)))))
 
 (defun yahtzee-select-next-field ()
   "Select the next field without a fixed score."
