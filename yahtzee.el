@@ -667,7 +667,8 @@ A bonus is awarded when the player scores at least
     map)
   "Keymap for yahtzee major mode.")
 
-(define-derived-mode yahtzee-mode special-mode "yahtzee")
+(define-derived-mode yahtzee-mode special-mode "yahtzee"
+  (toggle-truncate-lines))
 
 (defun yahtzee-initialize-scores ()
   "Initialize all scores for all players to nil."
