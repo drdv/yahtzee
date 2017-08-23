@@ -1,0 +1,28 @@
+{
+  "players": [
+    "Mitko"
+  ],
+  "total-score": {
+    "Mitko": 431
+  },
+  "scores": [
+    {
+      "chance": 24,
+      "minus": 24,
+      "plus": 26,
+      "rigole": 50,
+      "yams": 50,
+      "carre": 40,
+      "grande-suite": 35,
+      "petite-suite": 25,
+      "brelan": 23,
+      "full": 30,
+      "6": 24,
+      "5": 20,
+      "4": 12,
+      "3": 9,
+      "2": 6,
+      "1": 3
+    }
+  ]
+}
