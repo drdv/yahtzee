@@ -571,7 +571,7 @@ Here I use a fixed score instead of the official sum of all dice."
   (push '("plus" . yahtzee-plus-compute-score) yahtzee-fields-alist)
   (push '("rigole" . yahtzee-rigole-compute-score) yahtzee-fields-alist)
   (push '("yams" . yahtzee-yams-compute-score) yahtzee-fields-alist)
-  (push '("carre" . yahtzee-carre-compute-score) yahtzee-fields-alist)
+  (push '("carré" . yahtzee-carre-compute-score) yahtzee-fields-alist)
   (push '("grande-suite" . yahtzee-grande-suite-compute-score)
 	yahtzee-fields-alist)
   (push '("petite-suite" . yahtzee-petite-suite-compute-score)
