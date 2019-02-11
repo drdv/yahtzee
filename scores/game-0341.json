@@ -1,0 +1,68 @@
+{
+  "players": [
+    "Elena",
+    "Mitko",
+    "Marina"
+  ],
+  "total-score": {
+    "Elena": 332,
+    "Mitko": 362,
+    "Marina": 346
+  },
+  "scores": [
+    {
+      "chance": 11,
+      "minus": 11,
+      "plus": 19,
+      "rigole": 50,
+      "yams": 0,
+      "carré": 40,
+      "grande-suite": 35,
+      "petite-suite": 25,
+      "brelan": 13,
+      "full": 30,
+      "6": 18,
+      "5": 15,
+      "4": 16,
+      "3": 9,
+      "2": 8,
+      "1": 2
+    },
+    {
+      "chance": 18,
+      "minus": 22,
+      "plus": 24,
+      "rigole": 50,
+      "yams": 0,
+      "carré": 40,
+      "grande-suite": 35,
+      "petite-suite": 25,
+      "brelan": 23,
+      "full": 30,
+      "6": 18,
+      "5": 15,
+      "4": 12,
+      "3": 9,
+      "2": 8,
+      "1": 3
+    },
+    {
+      "chance": 22,
+      "minus": 14,
+      "plus": 20,
+      "rigole": 50,
+      "yams": 0,
+      "carré": 40,
+      "grande-suite": 35,
+      "petite-suite": 25,
+      "brelan": 13,
+      "full": 30,
+      "6": 24,
+      "5": 15,
+      "4": 12,
+      "3": 6,
+      "2": 6,
+      "1": 4
+    }
+  ]
+}
