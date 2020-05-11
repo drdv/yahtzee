@@ -163,7 +163,7 @@ The format should be [((field-name . score)...)...], i.e.,
   :group 'yahtzee-faces)
 
 (defface yahtzee-face-fixed '((t . (:inherit highlight
-					     :background "burlywood"
+					     :background "color-94"
 					     :foreground "black")))
   "Face for fixed stuff."
   :group 'yahtzee-faces)
