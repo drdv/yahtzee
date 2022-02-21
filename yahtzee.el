@@ -720,6 +720,7 @@ A bonus is awarded when the player scores at least
   (setq yahtzee-dice-outcomes-counts
 	(make-vector (length yahtzee-dice-possible-outcomes) 0)))
 
+;;;###autoload
 (defun yahtzee ()
   "Start a new game."
   (interactive)
